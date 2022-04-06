@@ -1,0 +1,11 @@
+read color:word(1)
+
+gameloop
+read unitCount:int
+write up
+
+STATEMENT
+WALK!
+
+INPUT
+color: current color of your team ("RED" or "BLUE")
