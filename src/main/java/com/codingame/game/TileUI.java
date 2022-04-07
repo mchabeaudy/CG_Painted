@@ -14,7 +14,7 @@ public class TileUI {
         String color;
         switch (new Random().nextInt(4)) {
             case 1:
-                color = "red_tile.png";
+                color = "yellow_tile.png";
                 break;
             case 2:
                 color = "blue_tile.png";
