@@ -1,7 +1,6 @@
 package com.codingame.game;
 
 import com.codingame.gameengine.module.entities.Sprite;
-import java.util.Random;
 
 public class TileUI {
 
@@ -10,18 +9,18 @@ public class TileUI {
     private int owner;
     private Sprite sprite;
 
-    public TileUI(int x, int y, Viewer viewer) {
+    public TileUI(int x, int y, Viewer viewer, int type) {
         String color;
-        switch (new Random().nextInt(4)) {
-            case 1:
+        switch (type) {
+            case 0:
                 color = "yellow_tile.png";
                 break;
-            case 2:
+            case 1:
                 color = "blue_tile.png";
                 break;
             case 3:
             default:
-                color = "tile.png";
+                color = "grey_tile.png";
                 break;
         }
         sprite = viewer.getGraphics().createSprite()

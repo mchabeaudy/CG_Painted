@@ -4,6 +4,7 @@ import static java.util.stream.IntStream.range;
 
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import java.util.function.Function;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,10 +22,10 @@ public class Viewer {
     private int height;
     private int tileWidth;
     private TileUI[][] tiles;
+    private UnitUI unit;
 
     public void init(Board board) {
         graphics.createRectangle().setWidth(viewerWidth).setHeight(viewerHeight).setFillColor(BACKGROUND_COLOR);
-
         viewerWidth = graphics.getWorld().getWidth();
         viewerHeight = graphics.getWorld().getHeight();
         width = board.getWidth();
@@ -37,9 +38,34 @@ public class Viewer {
             int yG = height - y - 1;
             range(0, width).forEach(x -> {
                 int xG = x;
-                tiles[y][x] = new TileUI(startX + xG * tileWidth, tileWidth / 2 + yG * tileWidth - fontSize / 2, this);
+                tiles[y][x] = new TileUI(startX + xG * tileWidth, tileWidth / 2 + yG * tileWidth - fontSize / 2, this,
+                        board.getGameMap().getBoxes()[y][x]);
+                if (x == 10 && y == 10) {
+                }
             });
         });
+        Function<Integer, Integer> xConvertor = t -> startX + t * tileWidth + tileWidth / 15;
+        Function<Integer, Integer> yConvertor = t -> tileWidth / 2 + t * tileWidth - fontSize / 2 + tileWidth / 15;
+        UnitUI u = new UnitUI(xConvertor, yConvertor, this);
+        u.setX(5);
+        u.setY(5);
+        UnitUI u1 = new UnitUI(xConvertor, yConvertor, this);
+        u1.setX(5);
+        u1.setY(10);
+        UnitUI u2 = new UnitUI(xConvertor, yConvertor, this);
+        u2.setX(10);
+        u2.setY(5);
+        UnitUI u3 = new UnitUI(xConvertor, yConvertor, this);
+        u3.setX(10);
+        u3.setY(10);
+        setUnit(u);
     }
 
+    public void setUnit(UnitUI unit) {
+        this.unit = unit;
+    }
+
+    public UnitUI getUnit() {
+        return unit;
+    }
 }

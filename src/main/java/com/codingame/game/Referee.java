@@ -1,5 +1,6 @@
 package com.codingame.game;
 
+import com.codingame.game.map.GameMap;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
@@ -9,7 +10,6 @@ import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import java.util.Random;
 import javax.inject.Inject;
-import lombok.RequiredArgsConstructor;
 
 public class Referee extends AbstractReferee {
 
@@ -34,8 +34,9 @@ public class Referee extends AbstractReferee {
         playerCount = gameManager.getPlayerCount();
         gameManager.setMaxTurns(MAX_TURN * playerCount);
         random.setSeed(gameManager.getSeed());
+        gameManager.setFrameDuration(400);
         viewer = new Viewer(gameManager, graphicEntityModule);
-        viewer.init(new Board(20, 20));
+        viewer.init(new Board(25, 25, new GameMap(random, 2)));
     }
 
     @Override
@@ -45,6 +46,24 @@ public class Referee extends AbstractReferee {
             p.execute();
         }
         this.turn = turn;
+
+        switch (turn % 4) {
+            case 0:
+                viewer.getUnit().moveUp();
+                break;
+            case 1:
+                viewer.getUnit().moveRight();
+                break;
+            case 2:
+                viewer.getUnit().moveDown();
+                break;
+            case 3:
+                viewer.getUnit().moveLeft();
+                break;
+            default:
+                break;
+
+        }
 
         for (Player player : gameManager.getActivePlayers()) {
             try {
