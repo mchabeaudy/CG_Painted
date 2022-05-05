@@ -13,12 +13,17 @@ public class TileUI {
         String color;
         switch (type) {
             case 0:
-                color = "yellow_tile.png";
+                color = "grey_tile.png";
                 break;
             case 1:
+                color = "yellow_tile.png";
+                break;
+            case 2:
                 color = "blue_tile.png";
                 break;
             case 3:
+                color = "yellow_tile.png";
+                break;
             default:
                 color = "grey_tile.png";
                 break;

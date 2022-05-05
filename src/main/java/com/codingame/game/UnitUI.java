@@ -7,6 +7,7 @@ public class UnitUI {
 
     private int x, y;
     private Sprite sprite;
+    private int team = 0;
 
     private Function<Integer, Integer> xConvertor, yConvertor;
 
