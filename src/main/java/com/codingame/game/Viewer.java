@@ -4,7 +4,7 @@ import static java.util.stream.IntStream.range;
 
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -22,9 +22,14 @@ public class Viewer {
     private int height;
     private int tileWidth;
     private TileUI[][] tiles;
-    private UnitUI unit;
+    private UnitUI unit1;
+    private UnitUI unit2;
+    private UnaryOperator<Integer> xConvertor;
+    private UnaryOperator<Integer> yConvertor;
+    private Board board;
 
     public void init(Board board) {
+        this.board = board;
         graphics.createRectangle().setWidth(viewerWidth).setHeight(viewerHeight).setFillColor(BACKGROUND_COLOR);
         viewerWidth = graphics.getWorld().getWidth();
         viewerHeight = graphics.getWorld().getHeight();
@@ -34,38 +39,29 @@ public class Viewer {
         int startX = viewerWidth / 2 - tileWidth * width / 2;
         int fontSize = tileWidth / 3;
         tiles = new TileUI[height][width];
+        xConvertor = t -> startX + t * tileWidth + tileWidth / 15;
+        yConvertor = t -> tileWidth / 2 + t * tileWidth - fontSize / 2 + tileWidth / 15;
         range(0, height).forEach(y -> {
             int yG = height - y - 1;
             range(0, width).forEach(x -> {
                 int xG = x;
                 tiles[y][x] = new TileUI(startX + xG * tileWidth, tileWidth / 2 + yG * tileWidth - fontSize / 2, this,
                         board.getGameMap().getBoxes()[y][x]);
-                if (x == 10 && y == 10) {
-                }
             });
         });
-        Function<Integer, Integer> xConvertor = t -> startX + t * tileWidth + tileWidth / 15;
-        Function<Integer, Integer> yConvertor = t -> tileWidth / 2 + t * tileWidth - fontSize / 2 + tileWidth / 15;
-        UnitUI u = new UnitUI(xConvertor, yConvertor, this);
-        u.setX(5);
-        u.setY(5);
-        UnitUI u1 = new UnitUI(xConvertor, yConvertor, this);
-        u1.setX(5);
-        u1.setY(10);
-        UnitUI u2 = new UnitUI(xConvertor, yConvertor, this);
-        u2.setX(10);
-        u2.setY(5);
-        UnitUI u3 = new UnitUI(xConvertor, yConvertor, this);
-        u3.setX(10);
-        u3.setY(10);
-        setUnit(u);
+        unit1 = new UnitUI(xConvertor, yConvertor, this);
+        unit1.setX(2);
+        unit1.setY(12);
+        unit2 = new UnitUI(xConvertor, yConvertor, this);
+        unit2.setX(22);
+        unit2.setY(12);
+        paint();
     }
 
-    public void setUnit(UnitUI unit) {
-        this.unit = unit;
+
+    public void paint() {
+        tiles[24 - unit1.getY()][unit1.getX()].paint(1);
+        tiles[24 - unit2.getY()][unit2.getX()].paint(2);
     }
 
-    public UnitUI getUnit() {
-        return unit;
-    }
 }

@@ -11,6 +11,17 @@ public class TileUI {
 
     public TileUI(int x, int y, Viewer viewer, int type) {
         String color;
+        color = getColorPng(type);
+        sprite = viewer.getGraphics().createSprite()
+                .setImage(color)
+                .setBaseWidth(viewer.getTileWidth())
+                .setBaseHeight(viewer.getTileWidth())
+                .setX(x)
+                .setY(y);
+    }
+
+    private String getColorPng(int type) {
+        String color;
         switch (type) {
             case 0:
                 color = "grey_tile.png";
@@ -25,15 +36,13 @@ public class TileUI {
                 color = "yellow_tile.png";
                 break;
             default:
-                color = "grey_tile.png";
-                break;
+                throw new IllegalArgumentException("Unknown color : "+type);
         }
-        sprite = viewer.getGraphics().createSprite()
-                .setImage(color)
-                .setBaseWidth(viewer.getTileWidth())
-                .setBaseHeight(viewer.getTileWidth())
-                .setX(x)
-                .setY(y);
+        return color;
+    }
+
+    public void paint(int type){
+        sprite.setImage(getColorPng(type));
     }
 
 }

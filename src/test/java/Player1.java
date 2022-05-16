@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Player1 {
@@ -10,7 +11,24 @@ public class Player1 {
 
         while (true) {
             int unitCount = in.nextInt();
-            System.out.println("Toto");
+            String move;
+            switch (new Random().nextInt(4)) {
+                case 0:
+                    move = "UP";
+                    break;
+                case 1:
+                    move = "DOWN";
+                    break;
+                case 2:
+                    move = "LEFT";
+                    break;
+                case 3:
+                    move = "RIGHT";
+                    break;
+                default:
+                    throw new IllegalStateException();
+            }
+            System.out.println(move);
         }
     }
 

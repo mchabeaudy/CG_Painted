@@ -48,7 +48,7 @@ public class GameMap {
         } else {
             corner = MapFragment.of(allTypes[random.nextInt(allTypes.length)]);
         }
-        // 0 - 0 | corner
+        // 0 - 0
         buildFragment(0, 0, corner);
         // 1 - 0 
         MapFragment f10 = randomFragment(random, types);
@@ -114,7 +114,8 @@ public class GameMap {
 
     private void buildFragment(int dx, int dy, MapFragment fragment) {
         range(dy, dy + 5).forEach(y -> range(dx, dx + 5).forEach(
-                x -> boxes[y][x] = fragment.getWalls().stream().noneMatch(p -> p.equals(x - dx, y - dy)) ? 0 : 1));
+                x -> boxes[y][x] =
+                        fragment.getWalls().stream().noneMatch(p -> p.hasSameCoordinates(x - dx, y - dy)) ? 0 : 1));
 
     }
 

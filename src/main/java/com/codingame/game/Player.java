@@ -1,5 +1,7 @@
 package com.codingame.game;
 
+import com.codingame.game.action.Action;
+import com.codingame.game.action.InvalidAction;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +15,8 @@ public class Player extends AbstractMultiplayerPlayer {
         return 1;
     }
 
-    public String getAction() throws TimeoutException {
-        return getOutputs().get(0);
+    public Action getAction() throws TimeoutException, InvalidAction {
+        return Action.fromInput(getOutputs().get(0));
     }
 
 }

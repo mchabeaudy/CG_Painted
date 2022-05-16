@@ -1,5 +1,7 @@
 package com.codingame.game;
 
+import com.codingame.game.action.Action;
+import com.codingame.game.action.InvalidAction;
 import com.codingame.game.map.GameMap;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
@@ -36,7 +38,24 @@ public class Referee extends AbstractReferee {
         random.setSeed(gameManager.getSeed());
         gameManager.setFrameDuration(400);
         viewer = new Viewer(gameManager, graphicEntityModule);
-        viewer.init(new Board(25, 25, new GameMap(random, 2)));
+        viewer.init(new Board(25, 25, new GameMap(random, 1)));
+        switch (gameManager.getLeagueLevel()) {
+            case 1:
+                initLevel1();
+                break;
+            case 2:
+                initLevel2();
+                break;
+            default:
+                throw new IllegalStateException("Level " + gameManager.getLeagueLevel() + " has not been implemented");
+        }
+    }
+
+    private void initLevel1() {
+
+    }
+
+    private void initLevel2() {
     }
 
     @Override
@@ -47,30 +66,47 @@ public class Referee extends AbstractReferee {
         }
         this.turn = turn;
 
-        switch (turn % 4) {
-            case 0:
-                viewer.getUnit().moveUp();
-                break;
-            case 1:
-                viewer.getUnit().moveRight();
-                break;
-            case 2:
-                viewer.getUnit().moveDown();
-                break;
-            case 3:
-                viewer.getUnit().moveLeft();
-                break;
-            default:
-                break;
-
-        }
-
         for (Player player : gameManager.getActivePlayers()) {
             try {
-                String action = player.getAction();
+                Action action = player.getAction();
+                if (player.getIndex() == 0) {
+                    switch (action.getMove()) {
+                        case UP:
+                            viewer.getUnit1().moveUp();
+                            break;
+                        case DOWN:
+                            viewer.getUnit1().moveDown();
+                            break;
+                        case LEFT:
+                            viewer.getUnit1().moveLeft();
+                            break;
+                        case RIGHT:
+                            viewer.getUnit1().moveRight();
+                            break;
+                    }
+                }
+                if (player.getIndex() == 1) {
+                    switch (action.getMove()) {
+                        case UP:
+                            viewer.getUnit2().moveUp();
+                            break;
+                        case DOWN:
+                            viewer.getUnit2().moveDown();
+                            break;
+                        case LEFT:
+                            viewer.getUnit2().moveLeft();
+                            break;
+                        case RIGHT:
+                            viewer.getUnit2().moveRight();
+                            break;
+                    }
+                }
                 gameManager.addToGameSummary(String.format("Player %s played %s", player.getNicknameToken(), action));
+                viewer.paint();
             } catch (TimeoutException e) {
                 deactivatePlayer(player, "timeout!");
+            } catch (InvalidAction e) {
+                deactivatePlayer(player, e.getMessage());
             }
         }
         calculateState(turn);

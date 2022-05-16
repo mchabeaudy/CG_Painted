@@ -14,4 +14,6 @@ public class Board {
     private int height;
 
     private GameMap gameMap;
+
+
 }
