@@ -14,12 +14,13 @@ public class UnitUI {
 
     private Function<Integer, Integer> xConvertor, yConvertor;
 
-    public UnitUI(Function<Integer, Integer> xConvertor, Function<Integer, Integer> yConvertor, Viewer viewer) {
+    public UnitUI(Function<Integer, Integer> xConvertor, Function<Integer, Integer> yConvertor, Viewer viewer,
+            String unitImage) {
         this.xConvertor = xConvertor;
         this.yConvertor = yConvertor;
         this.viewer = viewer;
         sprite = viewer.getGraphics().createSprite()
-                .setImage("test2.png")
+                .setImage(unitImage)
                 .setBaseWidth(viewer.getTileWidth() * 9 / 10)
                 .setBaseHeight(viewer.getTileWidth() * 9 / 10);
     }

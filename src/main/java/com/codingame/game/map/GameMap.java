@@ -115,7 +115,7 @@ public class GameMap {
     private void buildFragment(int dx, int dy, MapFragment fragment) {
         range(dy, dy + 5).forEach(y -> range(dx, dx + 5).forEach(
                 x -> boxes[y][x] =
-                        fragment.getWalls().stream().noneMatch(p -> p.hasSameCoordinates(x - dx, y - dy)) ? 0 : 1));
+                        fragment.getWalls().stream().noneMatch(p -> p.hasSameCoordinates(x - dx, y - dy)) ? 0 : 3));
 
     }
 

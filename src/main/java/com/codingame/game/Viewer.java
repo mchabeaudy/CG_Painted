@@ -39,8 +39,8 @@ public class Viewer {
         int startX = viewerWidth / 2 - tileWidth * width / 2;
         int fontSize = tileWidth / 3;
         tiles = new TileUI[height][width];
-        xConvertor = t -> startX + t * tileWidth + tileWidth / 15;
-        yConvertor = t -> tileWidth / 2 + t * tileWidth - fontSize / 2 + tileWidth / 15;
+        xConvertor = x -> startX + x * tileWidth + tileWidth / 15;
+        yConvertor = y -> tileWidth / 2 + (width - 1 - y) * tileWidth - fontSize / 2 + tileWidth / 15;
         range(0, height).forEach(y -> {
             int yG = height - y - 1;
             range(0, width).forEach(x -> {
@@ -49,10 +49,10 @@ public class Viewer {
                         board.getGameMap().getBoxes()[y][x]);
             });
         });
-        unit1 = new UnitUI(xConvertor, yConvertor, this);
+        unit1 = new UnitUI(xConvertor, yConvertor, this, "yellow_unit.png");
         unit1.setX(2);
         unit1.setY(12);
-        unit2 = new UnitUI(xConvertor, yConvertor, this);
+        unit2 = new UnitUI(xConvertor, yConvertor, this, "blue_unit.png");
         unit2.setX(22);
         unit2.setY(12);
         paint();
@@ -60,8 +60,8 @@ public class Viewer {
 
 
     public void paint() {
-        tiles[24 - unit1.getY()][unit1.getX()].paint(1);
-        tiles[24 - unit2.getY()][unit2.getX()].paint(2);
+        tiles[unit1.getY()][unit1.getX()].paint(1);
+        tiles[unit2.getY()][unit2.getX()].paint(2);
     }
 
 }

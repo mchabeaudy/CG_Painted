@@ -33,7 +33,7 @@ public class TileUI {
                 color = "blue_tile.png";
                 break;
             case 3:
-                color = "yellow_tile.png";
+                color = "black_tile.png";
                 break;
             default:
                 throw new IllegalArgumentException("Unknown color : "+type);
