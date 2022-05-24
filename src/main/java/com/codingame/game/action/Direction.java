@@ -4,13 +4,14 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
-public enum Move {
+public enum Direction {
+    NONE,
     UP,
     DOWN,
-    RIGHT,
-    LEFT;
+    LEFT,
+    RIGHT;
 
-    public static Optional<Move> fromString(String move)
+    public static Optional<Direction> fromString(String move)
     {
         return Arrays.stream(values())
                 .filter(m-> Objects.equals(m.name(), move))

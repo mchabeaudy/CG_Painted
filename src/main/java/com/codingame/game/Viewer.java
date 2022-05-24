@@ -55,6 +55,12 @@ public class Viewer {
         unit2 = new UnitUI(xConvertor, yConvertor, this, "blue_unit.png");
         unit2.setX(22);
         unit2.setY(12);
+        UnitUI u1 = new UnitUI(xConvertor,yConvertor,this,"yellow_2_unit.png");
+        u1.setX(3);
+        u1.setY(13);
+        UnitUI u2 = new UnitUI(xConvertor,yConvertor,this,"blue_2_unit.png");
+        u2.setX(21);
+        u2.setY(11);
         paint();
     }
 

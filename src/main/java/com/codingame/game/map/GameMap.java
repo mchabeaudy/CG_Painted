@@ -12,6 +12,8 @@ public class GameMap {
 
 
     private final int[][] boxes;
+    private List<Transporter> transporters = new ArrayList<>();
+    private boolean withRocks;
 
     public GameMap(Random random, int gameLevel) {
         boxes = new int[25][25];
@@ -20,8 +22,13 @@ public class GameMap {
                 buildLevel1();
                 break;
             case 2:
+                buildRandomMap(random, false);
+                break;
+            case 3:
+            case 4:
+                buildRandomMap(random, true);
+                break;
             default:
-                buildRandomMap(random);
                 break;
         }
 
@@ -31,7 +38,8 @@ public class GameMap {
         range(0, 25).forEach(y -> range(0, 25).forEach(x -> boxes[y][x] = 0));
     }
 
-    private void buildRandomMap(Random random) {
+    private void buildRandomMap(Random random, boolean withTeleportAndBlocks) {
+        this.withRocks = withTeleportAndBlocks;
         MapFragmentType[] allTypes = MapFragmentType.values();
         List<MapFragmentType> types = Arrays.stream(allTypes).filter(t -> t != MapFragmentType.CORNER_ROOM)
                 .collect(Collectors.toList());
@@ -45,6 +53,13 @@ public class GameMap {
         MapFragment corner;
         if (random.nextInt(3) != 2) {
             corner = MapFragment.of(MapFragmentType.CORNER_ROOM);
+            if (withTeleportAndBlocks && random.nextInt(3) != 2) {
+                boolean cross = random.nextBoolean();
+                transporters.add(new Transporter(1, 1, 0));
+                transporters.add(new Transporter(23, 1, cross ? 1 : 0));
+                transporters.add(new Transporter(1, 23, 1));
+                transporters.add(new Transporter(23, 23, cross ? 1 : 0));
+            }
         } else {
             corner = MapFragment.of(allTypes[random.nextInt(allTypes.length)]);
         }

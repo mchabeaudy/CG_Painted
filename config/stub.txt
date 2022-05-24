@@ -1,8 +1,15 @@
-read color:word(1)
+read playerId:int
+read team:word
+read boardWidth:int
+read boardHeight:int
+read tpCount:int
+loop tpCount read tpX:int tpY:int tpLinkId:int
 
 gameloop
-read unitCount:int
-write up
+loop boardHeight read line:word(boardWidth)
+read entityCount:int
+loop entityCount read entityX:int entityY:int owner:int entityTeamId:int
+write
 
 STATEMENT
 WALK!

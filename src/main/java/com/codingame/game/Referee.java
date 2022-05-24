@@ -2,6 +2,7 @@ package com.codingame.game;
 
 import com.codingame.game.action.Action;
 import com.codingame.game.action.InvalidAction;
+import com.codingame.game.action.MoveAction;
 import com.codingame.game.map.GameMap;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
@@ -52,7 +53,6 @@ public class Referee extends AbstractReferee {
     }
 
     private void initLevel1() {
-
     }
 
     private void initLevel2() {
@@ -60,6 +60,9 @@ public class Referee extends AbstractReferee {
 
     @Override
     public void gameTurn(int turn) {
+        if(turn==0){
+            sendFirstInputs();
+        }
         for (Player p : gameManager.getActivePlayers()) {
             sendInput(p, turn);
             p.execute();
@@ -70,35 +73,39 @@ public class Referee extends AbstractReferee {
             try {
                 Action action = player.getAction();
                 if (player.getIndex() == 0) {
-                    switch (action.getMove()) {
-                        case UP:
-                            viewer.getUnit1().moveUp();
-                            break;
-                        case DOWN:
-                            viewer.getUnit1().moveDown();
-                            break;
-                        case LEFT:
-                            viewer.getUnit1().moveLeft();
-                            break;
-                        case RIGHT:
-                            viewer.getUnit1().moveRight();
-                            break;
+                    if (action.getMoveAction() == MoveAction.MOVE) {
+                        switch (action.getDirection()) {
+                            case UP:
+                                viewer.getUnit1().moveUp();
+                                break;
+                            case DOWN:
+                                viewer.getUnit1().moveDown();
+                                break;
+                            case LEFT:
+                                viewer.getUnit1().moveLeft();
+                                break;
+                            case RIGHT:
+                                viewer.getUnit1().moveRight();
+                                break;
+                        }
                     }
                 }
                 if (player.getIndex() == 1) {
-                    switch (action.getMove()) {
-                        case UP:
-                            viewer.getUnit2().moveUp();
-                            break;
-                        case DOWN:
-                            viewer.getUnit2().moveDown();
-                            break;
-                        case LEFT:
-                            viewer.getUnit2().moveLeft();
-                            break;
-                        case RIGHT:
-                            viewer.getUnit2().moveRight();
-                            break;
+                    if (action.getMoveAction() == MoveAction.MOVE) {
+                        switch (action.getDirection()) {
+                            case UP:
+                                viewer.getUnit2().moveUp();
+                                break;
+                            case DOWN:
+                                viewer.getUnit2().moveDown();
+                                break;
+                            case LEFT:
+                                viewer.getUnit2().moveLeft();
+                                break;
+                            case RIGHT:
+                                viewer.getUnit2().moveRight();
+                                break;
+                        }
                     }
                 }
                 gameManager.addToGameSummary(String.format("Player %s played %s", player.getNicknameToken(), action));
@@ -114,6 +121,13 @@ public class Referee extends AbstractReferee {
             endGame();
         }
 
+    }
+
+    private void sendFirstInputs() {
+        for(Player p : gameManager.getActivePlayers())
+        {
+
+        }
     }
 
     private void calculateState(int turn) {

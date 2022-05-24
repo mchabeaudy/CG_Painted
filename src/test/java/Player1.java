@@ -14,16 +14,16 @@ public class Player1 {
             String move;
             switch (new Random().nextInt(4)) {
                 case 0:
-                    move = "UP";
+                    move = "MOVE UP";
                     break;
                 case 1:
-                    move = "DOWN";
+                    move = "MOVE DOWN";
                     break;
                 case 2:
-                    move = "LEFT";
+                    move = "MOVE LEFT";
                     break;
                 case 3:
-                    move = "RIGHT";
+                    move = "MOVE RIGHT";
                     break;
                 default:
                     throw new IllegalStateException();

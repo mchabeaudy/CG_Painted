@@ -15,4 +15,5 @@ public class Unit extends Point {
     public boolean equals(Object o) {
         return o instanceof Unit && ((Unit) o).id == id;
     }
+
 }

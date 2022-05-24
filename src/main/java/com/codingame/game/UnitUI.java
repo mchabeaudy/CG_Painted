@@ -1,7 +1,7 @@
 package com.codingame.game;
 
 import com.codingame.gameengine.module.entities.Sprite;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import lombok.Getter;
 
 @Getter
@@ -11,14 +11,16 @@ public class UnitUI {
     private Sprite sprite;
     private int team = 0;
     private Viewer viewer;
+    private String unitImage;
 
-    private Function<Integer, Integer> xConvertor, yConvertor;
+    private UnaryOperator<Integer> xConvertor, yConvertor;
 
-    public UnitUI(Function<Integer, Integer> xConvertor, Function<Integer, Integer> yConvertor, Viewer viewer,
+    public UnitUI(UnaryOperator<Integer> xConvertor, UnaryOperator<Integer> yConvertor, Viewer viewer,
             String unitImage) {
         this.xConvertor = xConvertor;
         this.yConvertor = yConvertor;
         this.viewer = viewer;
+        this.unitImage = unitImage;
         sprite = viewer.getGraphics().createSprite()
                 .setImage(unitImage)
                 .setBaseWidth(viewer.getTileWidth() * 9 / 10)
@@ -36,6 +38,8 @@ public class UnitUI {
     }
 
     public void moveUp() {
+        sprite.setImage(unitImage);
+        viewer.getGraphics().commitEntityState(0, sprite);
         if (y - 1 >= 0) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y - 1][x];
             if (b == 0 || b == 1 || b == 2) {
@@ -45,6 +49,8 @@ public class UnitUI {
     }
 
     public void moveDown() {
+        sprite.setImage(unitImage);
+        viewer.getGraphics().commitEntityState(0, sprite);
         if (y + 1 < 25) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y + 1][x];
             if (b == 0 || b == 1 || b == 2) {
@@ -54,6 +60,8 @@ public class UnitUI {
     }
 
     public void moveRight() {
+        sprite.setImage(unitImage.replace(".png", "_2.png"));
+        viewer.getGraphics().commitEntityState(0, sprite);
         if (x + 1 < 25) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y][x + 1];
             if (b == 0 || b == 1 || b == 2) {
@@ -63,6 +71,8 @@ public class UnitUI {
     }
 
     public void moveLeft() {
+        sprite.setImage(unitImage.replace(".png", "_2.png"));
+        viewer.getGraphics().commitEntityState(0, sprite);
         if (x - 1 >= 0) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y][x - 1];
             if (b == 0 || b == 1 || b == 2) {
