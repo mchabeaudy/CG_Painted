@@ -16,7 +16,7 @@ public class GameMap {
     private boolean withRocks;
 
     public GameMap(Random random, int gameLevel) {
-        boxes = new int[25][25];
+        boxes = new int[20][20];
         switch (gameLevel) {
             case 1:
                 buildLevel1();
@@ -35,7 +35,7 @@ public class GameMap {
     }
 
     private void buildLevel1() {
-        range(0, 25).forEach(y -> range(0, 25).forEach(x -> boxes[y][x] = 0));
+        range(0, 20).forEach(y -> range(0, 20).forEach(x -> boxes[y][x] = 0));
     }
 
     private void buildRandomMap(Random random, boolean withTeleportAndBlocks) {

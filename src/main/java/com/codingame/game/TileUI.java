@@ -24,16 +24,16 @@ public class TileUI {
         String color;
         switch (type) {
             case 0:
-                color = "grey_tile.png";
+                color = "tile1.png";
                 break;
             case 1:
-                color = "yellow_tile.png";
+                color = "green-tile.png";
                 break;
             case 2:
-                color = "blue_tile.png";
+                color = "green-tile.png";
                 break;
             case 3:
-                color = "black_tile.png";
+                color = "wall.png";
                 break;
             default:
                 throw new IllegalArgumentException("Unknown color : "+type);
