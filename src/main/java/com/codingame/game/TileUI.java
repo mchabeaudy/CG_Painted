@@ -27,10 +27,10 @@ public class TileUI {
                 color = "tile1.png";
                 break;
             case 1:
-                color = "green-tile.png";
+                color = "orange.jpg";
                 break;
             case 2:
-                color = "green-tile.png";
+                color = "mauve.jpg";
                 break;
             case 3:
                 color = "wall.png";

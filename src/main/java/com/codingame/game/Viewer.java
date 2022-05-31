@@ -40,7 +40,7 @@ public class Viewer {
         int fontSize = tileWidth / 3;
         tiles = new TileUI[height][width];
         xConvertor = x -> startX + x * tileWidth + tileWidth / 15;
-        yConvertor = y -> tileWidth / 2 + (width - 1 - y) * tileWidth - fontSize / 2 + tileWidth / 15;
+        yConvertor = y -> tileWidth / 2 + (height - 1 - y) * tileWidth - fontSize / 2 + tileWidth / 15;
         range(0, height).forEach(y -> {
             int yG = height - y - 1;
             range(0, width).forEach(x -> {
@@ -51,10 +51,10 @@ public class Viewer {
         });
         unit1 = new UnitUI(xConvertor, yConvertor, this, "robot-2_top.png");
         unit1.setX(2);
-        unit1.setY(8);
+        unit1.setY(9);
         unit2 = new UnitUI(xConvertor, yConvertor, this, "robot-2_top.png");
-        unit2.setX(18);
-        unit2.setY(8);
+        unit2.setX(21);
+        unit2.setY(9);
         paint();
     }
 

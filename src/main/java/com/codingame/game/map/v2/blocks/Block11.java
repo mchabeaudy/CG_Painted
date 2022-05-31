@@ -51,6 +51,7 @@ public class Block11 extends Block {
         walls.add(Point.of(3,3));
         return walls;
     }
+
     private static List<Point> walls3() {
         List<Point> walls = new ArrayList<>();
         walls.add(Point.of(0,0));
