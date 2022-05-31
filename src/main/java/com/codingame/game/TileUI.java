@@ -24,13 +24,13 @@ public class TileUI {
         String color;
         switch (type) {
             case 0:
-                color = "tile1.png";
+                color = "ground-tile.png";
                 break;
             case 1:
-                color = "orange.jpg";
+                color = "green-tile.png";
                 break;
             case 2:
-                color = "mauve.jpg";
+                color = "magenta-tile.jpg";
                 break;
             case 3:
                 color = "wall.png";

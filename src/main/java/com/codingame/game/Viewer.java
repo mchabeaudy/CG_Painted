@@ -49,13 +49,27 @@ public class Viewer {
                         board.getGameMap().getBoxes()[y][x]);
             });
         });
-        unit1 = new UnitUI(xConvertor, yConvertor, this, "robot-2_top.png");
+
+        addBox(startX, fontSize, 1, 10);
+        addBox(startX, fontSize, 23, 10);
+        addBox(startX, fontSize, 11, 10);
+
+        unit1 = new UnitUI(xConvertor, yConvertor, this, "robot-01-t.png");
         unit1.setX(2);
         unit1.setY(9);
-        unit2 = new UnitUI(xConvertor, yConvertor, this, "robot-2_top.png");
+        unit2 = new UnitUI(xConvertor, yConvertor, this, "robot-02-t.png");
         unit2.setX(21);
         unit2.setY(9);
         paint();
+    }
+
+    private void addBox(int startX, int fontSize, int x, int y) {
+        getGraphics().createSprite()
+            .setImage("box.png")
+            .setBaseWidth(getTileWidth())
+            .setBaseHeight(getTileWidth())
+            .setX(startX + x * tileWidth)
+            .setY(tileWidth / 2 + y * tileWidth - fontSize / 2);
     }
 
 
