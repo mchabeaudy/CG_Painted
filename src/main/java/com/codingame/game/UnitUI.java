@@ -38,7 +38,7 @@ public class UnitUI {
     }
 
     public void moveUp() {
-        sprite.setImage(unitImage);
+        sprite.setImage("robot-02_top.png");
         viewer.getGraphics().commitEntityState(0, sprite);
         if (y - 1 >= 0) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y - 1][x];
@@ -49,9 +49,9 @@ public class UnitUI {
     }
 
     public void moveDown() {
-        sprite.setImage(unitImage);
+        sprite.setImage("robot-02_down.png");
         viewer.getGraphics().commitEntityState(0, sprite);
-        if (y + 1 < 25) {
+        if (y + 1 < viewer.getHeight()) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y + 1][x];
             if (b == 0 || b == 1 || b == 2) {
                 setY(y + 1);
@@ -60,9 +60,9 @@ public class UnitUI {
     }
 
     public void moveRight() {
-        sprite.setImage(unitImage.replace(".png", "_2.png"));
+        sprite.setImage("robot-02_right.png");
         viewer.getGraphics().commitEntityState(0, sprite);
-        if (x + 1 < 25) {
+        if (x + 1 < viewer.getWidth()) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y][x + 1];
             if (b == 0 || b == 1 || b == 2) {
                 setX(x + 1);
@@ -71,7 +71,7 @@ public class UnitUI {
     }
 
     public void moveLeft() {
-        sprite.setImage(unitImage.replace(".png", "_2.png"));
+        sprite.setImage("robot-02_left.png");
         viewer.getGraphics().commitEntityState(0, sprite);
         if (x - 1 >= 0) {
             int b = viewer.getBoard().getGameMap().getBoxes()[y][x - 1];

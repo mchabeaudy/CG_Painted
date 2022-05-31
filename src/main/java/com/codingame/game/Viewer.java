@@ -40,7 +40,7 @@ public class Viewer {
         int fontSize = tileWidth / 3;
         tiles = new TileUI[height][width];
         xConvertor = x -> startX + x * tileWidth + tileWidth / 15;
-        yConvertor = y -> tileWidth / 2 + (width - 1 - y) * tileWidth - fontSize / 2 + tileWidth / 15;
+        yConvertor = y -> tileWidth / 2 + (height - 1 - y) * tileWidth - fontSize / 2 + tileWidth / 15;
         range(0, height).forEach(y -> {
             int yG = height - y - 1;
             range(0, width).forEach(x -> {
@@ -49,18 +49,12 @@ public class Viewer {
                         board.getGameMap().getBoxes()[y][x]);
             });
         });
-        unit1 = new UnitUI(xConvertor, yConvertor, this, "yellow_unit.png");
+        unit1 = new UnitUI(xConvertor, yConvertor, this, "robot-2_top.png");
         unit1.setX(2);
-        unit1.setY(12);
-        unit2 = new UnitUI(xConvertor, yConvertor, this, "blue_unit.png");
-        unit2.setX(22);
-        unit2.setY(12);
-        UnitUI u1 = new UnitUI(xConvertor,yConvertor,this,"yellow_2_unit.png");
-        u1.setX(3);
-        u1.setY(13);
-        UnitUI u2 = new UnitUI(xConvertor,yConvertor,this,"blue_2_unit.png");
-        u2.setX(21);
-        u2.setY(11);
+        unit1.setY(9);
+        unit2 = new UnitUI(xConvertor, yConvertor, this, "robot-2_top.png");
+        unit2.setX(21);
+        unit2.setY(9);
         paint();
     }
 

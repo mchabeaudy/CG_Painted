@@ -39,7 +39,8 @@ public class Referee extends AbstractReferee {
         random.setSeed(gameManager.getSeed());
         gameManager.setFrameDuration(400);
         viewer = new Viewer(gameManager, graphicEntityModule);
-        viewer.init(new Board(25, 25, new GameMap(random, 2)));
+       // viewer.init(new Board(25, 25, new GameMap(random, 2)));
+        viewer.init(new Board(24, 19, new GameMap(random, 3)));
         switch (gameManager.getLeagueLevel()) {
             case 1:
                 initLevel1();
