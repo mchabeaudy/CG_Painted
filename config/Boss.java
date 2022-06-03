@@ -3,6 +3,7 @@ import static java.util.stream.IntStream.range;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Random;
 
 class Player {
 
@@ -12,8 +13,24 @@ class Player {
         String color = in.next();
 
         while (true) {
-            int unitCount = in.nextInt();
-            System.out.println("Toto");
+            String move;
+            switch (new Random().nextInt(4)) {
+                case 0:
+                    move = "MOVE UP";
+                    break;
+                case 1:
+                    move = "MOVE DOWN";
+                    break;
+                case 2:
+                    move = "MOVE LEFT";
+                    break;
+                case 3:
+                    move = "MOVE RIGHT";
+                    break;
+                default:
+                    throw new IllegalStateException();
+            }
+            System.out.println(move);
         }
     }
 

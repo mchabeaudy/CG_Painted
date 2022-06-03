@@ -1,7 +1,6 @@
 package com.codingame.game.map;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Point {
 
-    int x, y;
+    protected int x, y;
 
     public static Point of(int x, int y) {
         return new Point(x, y);

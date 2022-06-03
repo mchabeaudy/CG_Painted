@@ -1,48 +1,30 @@
 package com.codingame.game;
 
+import com.codingame.game.map.MapElement;
 import com.codingame.gameengine.module.entities.Sprite;
+import lombok.Getter;
 
+@Getter
 public class TileUI {
 
-    private int x;
-    private int y;
-    private int owner;
-    private Sprite sprite;
+    private MapElement element;
+    private final Sprite sprite;
 
-    public TileUI(int x, int y, Viewer viewer, int type) {
-        String color;
-        color = getColorPng(type);
+    public TileUI(int x, int y, Viewer viewer, MapElement initialElement) {
+        element = initialElement;
         sprite = viewer.getGraphics().createSprite()
-                .setImage(color)
+                .setImage(initialElement.getImage())
                 .setBaseWidth(viewer.getTileWidth())
                 .setBaseHeight(viewer.getTileWidth())
                 .setX(x)
                 .setY(y);
     }
 
-    private String getColorPng(int type) {
-        String color;
-        switch (type) {
-            case 0:
-                color = "ground-tile.png";
-                break;
-            case 1:
-                color = "green-tile.png";
-                break;
-            case 2:
-                color = "magenta-tile.jpg";
-                break;
-            case 3:
-                color = "wall.png";
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown color : "+type);
-        }
-        return color;
-    }
 
-    public void paint(int type){
-        sprite.setImage(getColorPng(type));
+
+    public void setElement(MapElement element){
+        this.element = element;
+        sprite.setImage(element.getImage());
     }
 
 }

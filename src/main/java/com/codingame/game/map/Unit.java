@@ -1,19 +1,24 @@
 package com.codingame.game.map;
 
+import com.codingame.game.UnitUI;
+import com.codingame.game.action.Action;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Unit extends Point {
+public class Unit implements Displayable {
 
     private int id;
+    private int team;
     private int playerId;
-    private int teamId;
+    private int init;
+    private Action action;
+    private UnitUI ui;
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof Unit && ((Unit) o).id == id;
+    public String toDisplay() {
+        return "" + ui.getX() + " " + ui.getY() + " " + playerId + " " + team + " " + init;
     }
 
 }
