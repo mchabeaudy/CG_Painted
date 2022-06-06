@@ -5,13 +5,13 @@ read boardHeight:int
 read tpCount:int
 read boxCount:int
 read robotCount:int
+read robotPerPlayer:int
 loop tpCount read tpX:int tpY:int tpGroupId:int
-
 gameloop
-loop boardHeight read yLine:int line:word(boardWidth)
-loop robotCount read robotX:int robotY:int robotOwner:int robotTeam:int robotInit
+loop boardHeight read line:word(24)
+loop robotCount read robotX:int robotY:int robotOwner:int robotTeam:int robotInit:int robotId:int
 loop boxCount read boxX:int boxY:int
-write WAIT
+loop robotPerPlayer write WAIT
 
 STATEMENT
 Paint or be painted, that's the question.
@@ -24,4 +24,5 @@ boardHeight: height of the board
 tpCount: number of teleport
 boxCount: number of boxes
 robotCount: number of robots
+robotPerPlayer: number of robots per player
 robotOwner: id of the player who own this robot

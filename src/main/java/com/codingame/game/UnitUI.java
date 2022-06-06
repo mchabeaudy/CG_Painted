@@ -6,6 +6,7 @@ import static com.codingame.game.map.MapElement.TEAM2;
 import com.codingame.game.action.Action;
 import com.codingame.game.map.MapElement;
 import com.codingame.game.map.Point;
+import com.codingame.game.map.Teleport;
 import com.codingame.gameengine.module.entities.Sprite;
 import java.util.function.UnaryOperator;
 import lombok.Getter;
@@ -89,5 +90,11 @@ public class UnitUI extends Point {
             default:
                 throw new IllegalStateException("team has not been set for this unit");
         }
+    }
+
+    public void tpTo(Point tp) {
+        setX(tp.getX());
+        setY(tp.getY());
+        viewer.getGraphics().commitEntityState(0, sprite);
     }
 }

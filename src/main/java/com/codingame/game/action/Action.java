@@ -46,9 +46,7 @@ public class Action {
     }
 
     private static void buildTake(ActionBuilder builder, String[] args) throws InvalidAction {
-        if (args.length == 1) {
-            throw new InvalidAction("Missing instruction");
-        } else if (args.length > 1) {
+         if (args.length > 1) {
             builder.message(args[1]);
         }
     }

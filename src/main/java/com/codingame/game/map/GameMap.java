@@ -49,7 +49,8 @@ public class GameMap {
                 buildMap(random, true);
                 break;
             default:
-                throw new IllegalArgumentException("Level " + gameLevel + " has not been implemented");
+                throw new IllegalArgumentException(
+                    "Level " + gameLevel + " has not been implemented");
         }
     }
 
@@ -66,7 +67,8 @@ public class GameMap {
                 height = 19;
                 break;
             default:
-                throw new IllegalArgumentException("Level " + gameLevel + " has not been implemented");
+                throw new IllegalArgumentException(
+                    "Level " + gameLevel + " has not been implemented");
         }
         elements = new MapElement[height][width];
     }
@@ -76,15 +78,29 @@ public class GameMap {
     }
 
     public void buildMap(Random random, boolean withElements) {
+        boolean withTp = (withElements && random.nextBoolean())
+            || true; // to remove
         this.withRocks = random.nextBoolean();
+        if (withTp) {
+            boolean crossTp = random.nextBoolean();
+            teleports.add(new Teleport(1, 1, 1));
+            teleports.add(new Teleport(1, 17, 2));
+            if (crossTp) {
+                teleports.add(new Teleport(22, 1, 2));
+                teleports.add(new Teleport(22, 17, 1));
+            } else {
+                teleports.add(new Teleport(22, 1, 1));
+                teleports.add(new Teleport(22, 17, 2));
+            }
+        }
         int mapWidth = 24;
         int mapHeight = 19;
 
         range(0, mapHeight).forEach(y -> range(0, mapWidth).forEach(x -> elements[y][x] = NEUTRAL));
 
         // up left
-        Block block00 = Corner.of(withRocks, random, 0, 0);
-        Block block01 = Block01.of(withRocks, random, 0, 4);
+        Block block00 = Corner.of(withTp, random, 0, 0);
+        Block block01 = Block01.of(withTp, random, 0, 4);
         Block block02 = StartBlock.of(random, 0, 7);
         Block block10 = Block10.of(random, 4, 0);
         Block block11 = Block11.of(random, 4, 3);
@@ -152,7 +168,8 @@ public class GameMap {
         blocks.add(block44);
         blocks.add(block54);
 
-        blocks.forEach(b -> b.getWalls().forEach(p -> elements[b.getY() + p.getY()][b.getX() + p.getX()] = WALL));
+        blocks.forEach(b -> b.getWalls()
+            .forEach(p -> elements[b.getY() + p.getY()][b.getX() + p.getX()] = WALL));
     }
 
 
