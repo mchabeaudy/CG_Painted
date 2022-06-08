@@ -31,9 +31,9 @@ public class Referee extends AbstractReferee {
     @Inject
     private EndScreenModule endScreenModule;
 
+    private final List<Robot> robots = new ArrayList<>();
     private Viewer viewer;
     private Board board;
-    private List<Robot> robots = new ArrayList<>();
 
     private final Random random = new Random();
     private static final int MAX_TURN = 100;
@@ -139,7 +139,7 @@ public class Referee extends AbstractReferee {
         }
         handleActions();
         calculateState();
-        viewer.paint();
+        viewer.paint(robots);
         if (turn == MAX_TURN) {
             endGame();
         }

@@ -6,7 +6,6 @@ import static com.codingame.game.map.MapElement.TEAM2;
 import com.codingame.game.action.Action;
 import com.codingame.game.map.MapElement;
 import com.codingame.game.map.Point;
-import com.codingame.game.map.Teleport;
 import com.codingame.gameengine.module.entities.Sprite;
 import java.util.function.UnaryOperator;
 import lombok.Getter;
@@ -26,17 +25,22 @@ public class UnitUI extends Point {
 
     private UnaryOperator<Integer> xConvertor, yConvertor;
 
-    public UnitUI(UnaryOperator<Integer> xConvertor, UnaryOperator<Integer> yConvertor,
-            Viewer viewer,
-            String unitImage) {
-        this.xConvertor = xConvertor;
-        this.yConvertor = yConvertor;
+    public UnitUI(Viewer viewer, String unitImage, int x, int y) {
+        this(viewer, unitImage, x, y, 0);
+    }
+
+    public UnitUI(Viewer viewer, String unitImage, int x, int y, int team) {
+        this.xConvertor = viewer.getXConvertor();
+        this.yConvertor = viewer.getYConvertor();
         this.viewer = viewer;
+        this.team = team;
         this.unitImage = unitImage;
         sprite = viewer.getGraphics().createSprite()
                 .setImage(unitImage)
                 .setBaseWidth(viewer.getTileWidth() * 9 / 10)
                 .setBaseHeight(viewer.getTileWidth() * 9 / 10);
+        setX(x);
+        setY(y);
     }
 
     public void setX(int x) {
