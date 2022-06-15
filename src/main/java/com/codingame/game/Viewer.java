@@ -37,14 +37,12 @@ public class Viewer {
     private UnaryOperator<Integer> yConvertor;
     private Board board;
 
-    public void init(Board board, List<Robot> robots, int leagueLevel) {
+    public void init(Board board, List<Robot> robots, int leagueLevel, List<Player> players) {
         this.robots = robots;
         this.board = board;
         viewerWidth = graphics.getWorld().getWidth();
         viewerHeight = graphics.getWorld().getHeight();
-        graphics.createRectangle().setWidth(viewerWidth)
-                .setHeight(viewerHeight)
-                .setFillColor(0x123456);
+        initGraphics(leagueLevel, players);
         width = board.getWidth();
         height = board.getHeight();
         tileWidth = viewerHeight / height;
@@ -58,15 +56,16 @@ public class Viewer {
             int yG = height - y - 1;
             range(0, width).forEach(x ->
                 tiles[y][x] = new TileUI(startX + x * tileWidth,
-                        gap + yG * tileWidth, this,
-                        board.getGameMap().getElements()[y][x])
+                    gap + yG * tileWidth, this,
+                    board.getGameMap().getElements()[y][x])
             );
         });
 
         board.getGameMap().getTeleports()
-                .forEach(tp -> new UnitUI(this, tp.getGroupId() == 1 ? TELEPORT1 : TELEPORT2, tp.getX(), tp.getY()));
+            .forEach(tp -> new UnitUI(this, tp.getGroupId() == 1 ? TELEPORT1 : TELEPORT2, tp.getX(),
+                tp.getY()));
         board.getGameMap().getBoxes()
-                .forEach(box -> new UnitUI(this, BOX, box.getX(), box.getY()));
+            .forEach(box -> new UnitUI(this, BOX, box.getX(), box.getY()));
 
         switch (leagueLevel) {
             case 1:
@@ -83,23 +82,30 @@ public class Viewer {
                 throw new IllegalStateException("level not implemented");
         }
         paint(robots);
-        graphics.createText("PLAYER 1")
-                .setX(0)
-                .setY(0)
-                .setFontSize(50)
-                .setFillColor(0x777777);
+    }
+
+    private void initGraphics(int leagueLevel, List<Player> players) {
+        graphics.createSprite().setImage(leagueLevel == 1 ? "background1.png" : "background2.png")
+            .setBaseWidth(viewerWidth)
+            .setBaseHeight(viewerHeight);
         graphics.createBitmapText()
-                .setText("player 1")
-                .setFont("Minecraft")
-                .setFontSize(50)
-                .setX(0)
-                .setY(100);
-        graphics.createRectangle()
-                .setHeight(30)
-                .setWidth(30)
-                .setFillColor(0x456789)
-                .setX(0)
-                .setY(100);
+            .setText(players.get(0).getNicknameToken())
+            .setFont("Minecraft")
+            .setFontSize(75)
+            .setX(viewerWidth/100)
+            .setY(viewerHeight / 5)
+            .setRotation(Math.PI);
+        graphics.createSprite()
+            .setImage(players.get(0).getAvatarToken())
+            .setX(24*viewerWidth/530)
+            .setY(95*viewerHeight/300)
+            .setBaseWidth(100)
+            .setBaseHeight(100);
+        if(leagueLevel<3){
+
+        }else{
+
+        }
     }
 
     private void initLevel4(List<Robot> robots) {
@@ -128,16 +134,17 @@ public class Viewer {
 
     private void addBox(int startX, int fontSize, int x, int y) {
         getGraphics().createSprite()
-                .setImage("box.png")
-                .setBaseWidth(getTileWidth())
-                .setBaseHeight(getTileWidth())
-                .setX(startX + x * tileWidth)
-                .setY(tileWidth / 2 + y * tileWidth - fontSize / 2);
+            .setImage("box.png")
+            .setBaseWidth(getTileWidth())
+            .setBaseHeight(getTileWidth())
+            .setX(startX + x * tileWidth)
+            .setY(tileWidth / 2 + y * tileWidth - fontSize / 2);
     }
 
 
     public void paint(List<Robot> robots) {
-        robots.stream().map(Robot::getUi).forEach(u -> tiles[u.getY()][u.getX()].setElement(u.getMapElement()));
+        robots.stream().map(Robot::getUi)
+            .forEach(u -> tiles[u.getY()][u.getX()].setElement(u.getMapElement()));
     }
 
 

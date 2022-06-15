@@ -79,7 +79,7 @@ public class Referee extends AbstractReferee {
 
         board = new Board(15, 15, new GameMap(random, 1));
         viewer = new Viewer(gameManager, graphicEntityModule);
-        viewer.init(board, robots, 1);
+        viewer.init(board, robots, 1, gameManager.getPlayers());
     }
 
 
@@ -97,7 +97,7 @@ public class Referee extends AbstractReferee {
 
         board = new Board(24, 19, new GameMap(random, level));
         viewer = new Viewer(gameManager, graphicEntityModule);
-        viewer.init(board, robots, level);
+        viewer.init(board, robots, level, gameManager.getPlayers());
     }
 
     private void initLevel4() {
@@ -124,7 +124,7 @@ public class Referee extends AbstractReferee {
 
         board = new Board(24, 19, new GameMap(random, 4));
         viewer = new Viewer(gameManager, graphicEntityModule);
-        viewer.init(board, robots, 4);
+        viewer.init(board, robots, 4, gameManager.getPlayers());
     }
 
     @Override
