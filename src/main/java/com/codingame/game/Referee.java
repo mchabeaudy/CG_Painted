@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -62,7 +63,7 @@ public class Referee extends AbstractReferee {
                 break;
             default:
                 throw new IllegalStateException(
-                    "Level " + gameManager.getLeagueLevel() + " has not been implemented");
+                        "Level " + gameManager.getLeagueLevel() + " has not been implemented");
         }
     }
 
@@ -155,9 +156,9 @@ public class Referee extends AbstractReferee {
                     playerRobots.get(i).setAction(actions.get(i));
                 }
                 gameManager.addToGameSummary(
-                    String.format("Player %s played :%s", player.getNicknameToken(),
-                        System.lineSeparator() + actions.stream().map(Action::getMessage)
-                            .collect(Collectors.joining(System.lineSeparator()))));
+                        String.format("Player %s played :%s", player.getNicknameToken(),
+                                System.lineSeparator() + actions.stream().map(Action::getMessage)
+                                        .collect(Collectors.joining(System.lineSeparator()))));
             } catch (TimeoutException e) {
                 deactivatePlayer(player, "timeout!");
             } catch (InvalidAction e) {
@@ -183,54 +184,57 @@ public class Referee extends AbstractReferee {
     private void calculateState() {
         // resolve TP
         robots.stream()
-            .filter(r -> r.getAction().getMoveAction() == MoveAction.TAKE)
-            .forEach(r -> {
-                board.getGameMap().getTeleports().stream()
-                    .filter(t -> t.hasSameCoordinates(r.getUi()))
-                    .findAny()
-                    .ifPresent(tp -> {
-                        Teleport otherTp = board.getGameMap().getTeleports().stream()
-                            .filter(
-                                t -> !t.hasSameCoordinates(tp) && t.getGroupId() == tp.getGroupId())
-                            .findAny()
-                            .get();
-                        if(viewer.isEmpty(otherTp.getX(),otherTp.getY())){
-                            r.getUi().tpTo(otherTp);
-                        }
-                    });
-            });
+                .filter(r -> Optional.ofNullable(r.getAction())
+                        .map(Action::getMoveAction)
+                        .map(acton -> acton == MoveAction.TAKE)
+                        .orElse(false))
+                .forEach(r ->
+                        board.getGameMap().getTeleports().stream()
+                                .filter(t -> t.hasSameCoordinates(r.getUi()))
+                                .findAny()
+                                .ifPresent(tp -> {
+                                    Teleport otherTp = board.getGameMap().getTeleports().stream()
+                                            .filter(
+                                                    t -> !t.hasSameCoordinates(tp) && t.getGroupId() == tp.getGroupId())
+                                            .findAny()
+                                            .get();
+                                    if (viewer.isEmpty(otherTp.getX(), otherTp.getY())) {
+                                        r.getUi().tpTo(otherTp);
+                                    }
+                                })
+                );
 
         robots.stream()
-            .sorted(Comparator.comparingInt(Robot::getInit))
-            .forEach(u -> {
-                Action a = u.getAction();
-                if (a != null && a.getMoveAction() == MoveAction.MOVE) {
-                    switch (a.getDirection()) {
-                        case UP:
-                            u.getUi().moveUp();
-                            break;
-                        case DOWN:
-                            u.getUi().moveDown();
-                            break;
-                        case LEFT:
-                            u.getUi().moveLeft();
-                            break;
-                        case RIGHT:
-                            u.getUi().moveRight();
-                            break;
-                        default:
-                            throw new IllegalStateException(
-                                "Wrong direction : " + a.getDirection());
+                .sorted(Comparator.comparingInt(Robot::getInit))
+                .forEach(u -> {
+                    Action a = u.getAction();
+                    if (a != null && a.getMoveAction() == MoveAction.MOVE) {
+                        switch (a.getDirection()) {
+                            case UP:
+                                u.getUi().moveUp();
+                                break;
+                            case DOWN:
+                                u.getUi().moveDown();
+                                break;
+                            case LEFT:
+                                u.getUi().moveLeft();
+                                break;
+                            case RIGHT:
+                                u.getUi().moveRight();
+                                break;
+                            default:
+                                throw new IllegalStateException(
+                                        "Wrong direction : " + a.getDirection());
+                        }
                     }
-                }
-            });
+                });
     }
 
     private List<Robot> getUnits(int playerIndex) {
         return robots.stream()
-            .filter(u -> u.getPlayerId() == playerIndex)
-            .sorted(Comparator.comparingInt(Robot::getId))
-            .collect(Collectors.toList());
+                .filter(u -> u.getPlayerId() == playerIndex)
+                .sorted(Comparator.comparingInt(Robot::getId))
+                .collect(Collectors.toList());
     }
 
 
@@ -238,7 +242,7 @@ public class Referee extends AbstractReferee {
         for (int y = 0; y < board.getHeight(); y++) {
             TileUI[] tilesLine = viewer.getTiles()[y];
             String line = Arrays.stream(tilesLine).map(t -> t.getElement().getDisplay())
-                .collect(Collectors.joining());
+                    .collect(Collectors.joining());
             player.sendInputLine(line);
         }
         sendDisplayableToInput(robots, player);
@@ -246,10 +250,10 @@ public class Referee extends AbstractReferee {
     }
 
     private <T extends Displayable> void sendDisplayableToInput(List<T> displayableList,
-        Player player) {
+            Player player) {
         displayableList.stream()
-            .map(Displayable::toDisplay)
-            .forEach(player::sendInputLine);
+                .map(Displayable::toDisplay)
+                .forEach(player::sendInputLine);
     }
 
     private void endGame() {
@@ -259,13 +263,13 @@ public class Referee extends AbstractReferee {
     @Override
     public void onEnd() {
         endScreenModule.setScores(
-            gameManager.getPlayers().stream().mapToInt(AbstractMultiplayerPlayer::getScore)
-                .toArray());
+                gameManager.getPlayers().stream().mapToInt(AbstractMultiplayerPlayer::getScore)
+                        .toArray());
     }
 
     private void deactivatePlayer(Player player, String message) {
         gameManager.addToGameSummary(
-            GameManager.formatErrorMessage(player.getNicknameToken() + " - " + message));
+                GameManager.formatErrorMessage(player.getNicknameToken() + " - " + message));
         player.deactivate(message);
         player.setScore(-1);
     }

@@ -1,5 +1,6 @@
 package com.codingame.game;
 
+import static com.codingame.game.Constants.BOX;
 import static com.codingame.game.Constants.ROBOT1A;
 import static com.codingame.game.Constants.ROBOT1B;
 import static com.codingame.game.Constants.ROBOT2A;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class Viewer {
 
-    private static final int BACKGROUND_COLOR = 0x7F7F7F;
+    private static final int BACKGROUND_COLOR = 0x888888;
     private final MultiplayerGameManager<Player> gameManager;
     private final GraphicEntityModule graphics;
 
@@ -39,10 +40,11 @@ public class Viewer {
     public void init(Board board, List<Robot> robots, int leagueLevel) {
         this.robots = robots;
         this.board = board;
-        graphics.createRectangle().setWidth(viewerWidth).setHeight(viewerHeight)
-                .setFillColor(BACKGROUND_COLOR);
         viewerWidth = graphics.getWorld().getWidth();
         viewerHeight = graphics.getWorld().getHeight();
+        graphics.createRectangle().setWidth(viewerWidth)
+                .setHeight(viewerHeight)
+                .setFillColor(0x123456);
         width = board.getWidth();
         height = board.getHeight();
         tileWidth = viewerHeight / height;
@@ -54,16 +56,17 @@ public class Viewer {
         yConvertor = y -> gap + (height - 1 - y) * tileWidth + tileWidth / 15;
         range(0, height).forEach(y -> {
             int yG = height - y - 1;
-            range(0, width).forEach(x -> {
-                int xG = x;
-                tiles[y][x] = new TileUI(startX + xG * tileWidth,
+            range(0, width).forEach(x ->
+                tiles[y][x] = new TileUI(startX + x * tileWidth,
                         gap + yG * tileWidth, this,
-                        board.getGameMap().getElements()[y][x]);
-            });
+                        board.getGameMap().getElements()[y][x])
+            );
         });
 
         board.getGameMap().getTeleports()
                 .forEach(tp -> new UnitUI(this, tp.getGroupId() == 1 ? TELEPORT1 : TELEPORT2, tp.getX(), tp.getY()));
+        board.getGameMap().getBoxes()
+                .forEach(box -> new UnitUI(this, BOX, box.getX(), box.getY()));
 
         switch (leagueLevel) {
             case 1:
@@ -80,6 +83,23 @@ public class Viewer {
                 throw new IllegalStateException("level not implemented");
         }
         paint(robots);
+        graphics.createText("PLAYER 1")
+                .setX(0)
+                .setY(0)
+                .setFontSize(50)
+                .setFillColor(0x777777);
+        graphics.createBitmapText()
+                .setText("player 1")
+                .setFont("Minecraft")
+                .setFontSize(50)
+                .setX(0)
+                .setY(100);
+        graphics.createRectangle()
+                .setHeight(30)
+                .setWidth(30)
+                .setFillColor(0x456789)
+                .setX(0)
+                .setY(100);
     }
 
     private void initLevel4(List<Robot> robots) {

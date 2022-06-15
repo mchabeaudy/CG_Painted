@@ -1,7 +1,7 @@
-package com.codingame.game.map.v2.blocks;
+package com.codingame.game.map.block.blocks;
 
 import com.codingame.game.map.Point;
-import com.codingame.game.map.v2.Block;
+import com.codingame.game.map.block.Block;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,11 +30,11 @@ public class Block22 extends Block {
 
     private static List<Point> walls1() {
         List<Point> walls = new ArrayList<>();
-        walls.add(Point.of(0, 0));
-        walls.add(Point.of(0, 1));
-        walls.add(Point.of(0, 2));
-        walls.add(Point.of(1, 1));
+        walls.add(Point.of(3, 0));
+        walls.add(Point.of(3, 1));
+        walls.add(Point.of(3, 2));
         walls.add(Point.of(2, 1));
+        walls.add(Point.of(1, 1));
         return walls;
     }
 
@@ -58,9 +58,6 @@ public class Block22 extends Block {
 
     private static List<Point> walls4() {
         List<Point> walls = new ArrayList<>();
-        walls.add(Point.of(0, 0));
-        walls.add(Point.of(0, 1));
-        walls.add(Point.of(0, 2));
         walls.add(Point.of(2, 0));
         walls.add(Point.of(3, 0));
         walls.add(Point.of(2, 2));

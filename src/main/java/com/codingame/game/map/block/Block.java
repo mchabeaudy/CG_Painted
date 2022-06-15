@@ -1,4 +1,4 @@
-package com.codingame.game.map.v2;
+package com.codingame.game.map.block;
 
 import com.codingame.game.map.Point;
 import java.util.List;

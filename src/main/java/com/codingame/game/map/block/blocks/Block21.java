@@ -1,13 +1,13 @@
-package com.codingame.game.map.v2.blocks;
+package com.codingame.game.map.block.blocks;
 
 import com.codingame.game.map.Point;
-import com.codingame.game.map.v2.Block;
+import com.codingame.game.map.block.Block;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Corner extends Block {
+public class Block21 extends Block {
 
     private static final List<List<Point>> WALLS_LIST = new ArrayList<>();
 
@@ -19,74 +19,88 @@ public class Corner extends Block {
         WALLS_LIST.add(walls4());
         WALLS_LIST.add(walls5());
         WALLS_LIST.add(walls6());
+        WALLS_LIST.add(walls7());
     }
 
-    public static Corner of(boolean withTp, Random random, int x, int y) {
-        List<Point> walls = new ArrayList<>();
-        if (!withTp) {
-            walls.addAll(WALLS_LIST.get(random.nextInt(WALLS_LIST.size())));
-        }
-        return new Corner(walls, x, y);
-    }
-
-    private Corner(List<Point> walls, int x, int y) {
+    private Block21(List<Point> walls, int x, int y) {
         super(4, 4, walls, x, y);
+    }
+
+    public static Block21 of(Random random, int x, int y) {
+        return new Block21(WALLS_LIST.get(random.nextInt(WALLS_LIST.size())), x, y);
     }
 
     private static List<Point> walls1() {
         List<Point> walls = new ArrayList<>();
-        walls.add(Point.of(1, 1));
-        walls.add(Point.of(1, 2));
-        walls.add(Point.of(2, 2));
+        walls.add(Point.of(0, 0));
+        walls.add(Point.of(1, 0));
+        walls.add(Point.of(0, 1));
+        walls.add(Point.of(0, 2));
+        walls.add(Point.of(0, 3));
+        walls.add(Point.of(3, 0));
+        walls.add(Point.of(3, 1));
         walls.add(Point.of(3, 2));
         walls.add(Point.of(3, 3));
+        walls.add(Point.of(2, 3));
         return walls;
     }
 
     private static List<Point> walls2() {
         List<Point> walls = new ArrayList<>();
-        walls.add(Point.of(1, 1));
-        walls.add(Point.of(2, 1));
-        walls.add(Point.of(2, 2));
-        walls.add(Point.of(2, 3));
+        walls.add(Point.of(3, 0));
+        walls.add(Point.of(3, 1));
+        walls.add(Point.of(3, 2));
         walls.add(Point.of(3, 3));
         return walls;
     }
 
     private static List<Point> walls3() {
         List<Point> walls = new ArrayList<>();
-        walls.add(Point.of(2, 3));
-        walls.add(Point.of(3, 2));
-        walls.add(Point.of(3, 3));
+        walls.add(Point.of(0, 0));
+        walls.add(Point.of(0, 1));
+        walls.add(Point.of(0, 2));
+        walls.add(Point.of(0, 3));
         return walls;
     }
 
     private static List<Point> walls4() {
         List<Point> walls = new ArrayList<>();
-        walls.add(Point.of(1, 1));
-        walls.add(Point.of(2, 1));
-        walls.add(Point.of(2, 2));
+        walls.add(Point.of(3, 0));
+        walls.add(Point.of(3, 1));
         walls.add(Point.of(3, 2));
         walls.add(Point.of(3, 3));
+        walls.add(Point.of(1, 1));
+        walls.add(Point.of(2, 1));
         return walls;
     }
 
     private static List<Point> walls5() {
         List<Point> walls = new ArrayList<>();
-        walls.add(Point.of(2, 1));
+        walls.add(Point.of(0, 0));
+        walls.add(Point.of(0, 1));
+        walls.add(Point.of(0, 2));
+        walls.add(Point.of(0, 3));
         walls.add(Point.of(1, 2));
         walls.add(Point.of(2, 2));
-        walls.add(Point.of(3, 2));
-        walls.add(Point.of(3, 3));
         return walls;
     }
 
     private static List<Point> walls6() {
         List<Point> walls = new ArrayList<>();
         walls.add(Point.of(1, 1));
-        walls.add(Point.of(1, 2));
+        walls.add(Point.of(2, 1));
+        walls.add(Point.of(3, 1));
         walls.add(Point.of(2, 2));
-        walls.add(Point.of(2, 3));
+        return walls;
+    }
+
+    private static List<Point> walls7() {
+        List<Point> walls = new ArrayList<>();
+        walls.add(Point.of(0, 0));
+        walls.add(Point.of(1, 0));
+        walls.add(Point.of(1, 1));
+        walls.add(Point.of(1, 2));
+        walls.add(Point.of(2, 1));
         walls.add(Point.of(3, 3));
         return walls;
     }

@@ -1,19 +1,23 @@
 package com.codingame.game.map;
 
+import static com.codingame.game.Constants.MAP_HEIGHT_LEVEL1;
+import static com.codingame.game.Constants.MAP_HEIGHT_LEVEL234;
+import static com.codingame.game.Constants.MAP_WIDTH_LEVEL1;
+import static com.codingame.game.Constants.MAP_WIDTH_LEVEL234;
 import static com.codingame.game.map.MapElement.NEUTRAL;
 import static com.codingame.game.map.MapElement.WALL;
 import static java.util.stream.IntStream.range;
 
-import com.codingame.game.map.v2.Block;
-import com.codingame.game.map.v2.blocks.Block01;
-import com.codingame.game.map.v2.blocks.Block10;
-import com.codingame.game.map.v2.blocks.Block11;
-import com.codingame.game.map.v2.blocks.Block12;
-import com.codingame.game.map.v2.blocks.Block20;
-import com.codingame.game.map.v2.blocks.Block21;
-import com.codingame.game.map.v2.blocks.Block22;
-import com.codingame.game.map.v2.blocks.Corner;
-import com.codingame.game.map.v2.blocks.StartBlock;
+import com.codingame.game.map.block.Block;
+import com.codingame.game.map.block.blocks.Block01;
+import com.codingame.game.map.block.blocks.Block10;
+import com.codingame.game.map.block.blocks.Block11;
+import com.codingame.game.map.block.blocks.Block12;
+import com.codingame.game.map.block.blocks.Block20;
+import com.codingame.game.map.block.blocks.Block21;
+import com.codingame.game.map.block.blocks.Block22;
+import com.codingame.game.map.block.blocks.Corner;
+import com.codingame.game.map.block.blocks.StartBlock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,10 +27,9 @@ import lombok.Getter;
 public class GameMap {
 
 
+    private final List<Teleport> teleports = new ArrayList<>();
+    private final List<Box> boxes = new ArrayList<>();
     private MapElement[][] elements;
-    private List<Teleport> teleports = new ArrayList<>();
-    private List<Box> boxes = new ArrayList<>();
-    private boolean withRocks;
     private int width;
     private int height;
 
@@ -50,25 +53,25 @@ public class GameMap {
                 break;
             default:
                 throw new IllegalArgumentException(
-                    "Level " + gameLevel + " has not been implemented");
+                        "Level " + gameLevel + " has not been implemented");
         }
     }
 
     private void initDimensions(int gameLevel) {
         switch (gameLevel) {
             case 1:
-                width = 15;
-                height = 15;
+                width = MAP_WIDTH_LEVEL1;
+                height = MAP_HEIGHT_LEVEL1;
                 break;
             case 2:
             case 3:
             case 4:
-                width = 24;
-                height = 19;
+                width = MAP_WIDTH_LEVEL234;
+                height = MAP_HEIGHT_LEVEL234;
                 break;
             default:
                 throw new IllegalArgumentException(
-                    "Level " + gameLevel + " has not been implemented");
+                        "Level " + gameLevel + " has not been implemented");
         }
         elements = new MapElement[height][width];
     }
@@ -78,25 +81,28 @@ public class GameMap {
     }
 
     public void buildMap(Random random, boolean withElements) {
-        boolean withTp = (withElements && random.nextBoolean())
-            || true; // to remove
-        this.withRocks = random.nextBoolean();
+        boolean withTp = withElements && random.nextInt(4) < 3;
         if (withTp) {
             boolean crossTp = random.nextBoolean();
             teleports.add(new Teleport(1, 1, 1));
-            teleports.add(new Teleport(1, 17, 2));
+            teleports.add(new Teleport(1, height - 2, 2));
             if (crossTp) {
-                teleports.add(new Teleport(22, 1, 2));
-                teleports.add(new Teleport(22, 17, 1));
+                teleports.add(new Teleport(width - 2, 1, 2));
+                teleports.add(new Teleport(width - 2, height - 2, 1));
             } else {
-                teleports.add(new Teleport(22, 1, 1));
-                teleports.add(new Teleport(22, 17, 2));
+                teleports.add(new Teleport(width - 2, 1, 1));
+                teleports.add(new Teleport(width - 2, height - 2, 2));
+            }
+            boolean withBoxes = random.nextInt(4) < 3;
+            if (withBoxes) {
+                boxes.add(new Box(2, 2));
+                boxes.add(new Box(2, height - 3));
+                boxes.add(new Box(width - 3, height - 3));
+                boxes.add(new Box(width - 3, 2));
             }
         }
-        int mapWidth = 24;
-        int mapHeight = 19;
 
-        range(0, mapHeight).forEach(y -> range(0, mapWidth).forEach(x -> elements[y][x] = NEUTRAL));
+        range(0, height).forEach(y -> range(0, width).forEach(x -> elements[y][x] = NEUTRAL));
 
         // up left
         Block block00 = Corner.of(withTp, random, 0, 0);
@@ -110,31 +116,31 @@ public class GameMap {
         Block block22 = Block22.of(random, 8, 8);
 
         // up right
-        Block block30 = block20.verticalFlip(mapWidth);
-        Block block40 = block10.verticalFlip(mapWidth);
-        Block block50 = block00.verticalFlip(mapWidth);
-        Block block31 = block21.verticalFlip(mapWidth);
-        Block block41 = block11.verticalFlip(mapWidth);
-        Block block51 = block01.verticalFlip(mapWidth);
-        Block block32 = block22.verticalFlip(mapWidth);
-        Block block42 = block12.verticalFlip(mapWidth);
-        Block block52 = block02.verticalFlip(mapWidth);
+        Block block30 = block20.verticalFlip(width);
+        Block block40 = block10.verticalFlip(width);
+        Block block50 = block00.verticalFlip(width);
+        Block block31 = block21.verticalFlip(width);
+        Block block41 = block11.verticalFlip(width);
+        Block block51 = block01.verticalFlip(width);
+        Block block32 = block22.verticalFlip(width);
+        Block block42 = block12.verticalFlip(width);
+        Block block52 = block02.verticalFlip(width);
 
         // down left
-        Block block03 = Block01.of(withRocks, random, 0, 4).horizontalFlip(mapHeight);
-        Block block04 = block00.horizontalFlip(mapHeight);
-        Block block13 = Block11.of(random, 4, 3).horizontalFlip(mapHeight);
-        Block block14 = Block10.of(random, 4, 0).horizontalFlip(mapHeight);
-        Block block23 = Block21.of(random, 8, 4).horizontalFlip(mapHeight);
-        Block block24 = Block20.of(random, 8, 0).horizontalFlip(mapHeight);
+        Block block03 = Block01.of(withTp, random, 0, 4).horizontalFlip(height);
+        Block block04 = block00.horizontalFlip(height);
+        Block block13 = Block11.of(random, 4, 3).horizontalFlip(height);
+        Block block14 = Block10.of(random, 4, 0).horizontalFlip(height);
+        Block block23 = Block21.of(random, 8, 4).horizontalFlip(height);
+        Block block24 = Block20.of(random, 8, 0).horizontalFlip(height);
 
         // down right
-        Block block33 = block23.verticalFlip(mapWidth);
-        Block block43 = block13.verticalFlip(mapWidth);
-        Block block53 = block03.verticalFlip(mapWidth);
-        Block block34 = block24.verticalFlip(mapWidth);
-        Block block44 = block14.verticalFlip(mapWidth);
-        Block block54 = block04.verticalFlip(mapWidth);
+        Block block33 = block23.verticalFlip(width);
+        Block block43 = block13.verticalFlip(width);
+        Block block53 = block03.verticalFlip(width);
+        Block block34 = block24.verticalFlip(width);
+        Block block44 = block14.verticalFlip(width);
+        Block block54 = block04.verticalFlip(width);
 
         List<Block> blocks = new ArrayList<>();
         blocks.add(block00);
@@ -169,7 +175,7 @@ public class GameMap {
         blocks.add(block54);
 
         blocks.forEach(b -> b.getWalls()
-            .forEach(p -> elements[b.getY() + p.getY()][b.getX() + p.getX()] = WALL));
+                .forEach(p -> elements[b.getY() + p.getY()][b.getX() + p.getX()] = WALL));
     }
 
 

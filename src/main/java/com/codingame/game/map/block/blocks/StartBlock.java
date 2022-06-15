@@ -1,7 +1,7 @@
-package com.codingame.game.map.v2.blocks;
+package com.codingame.game.map.block.blocks;
 
 import com.codingame.game.map.Point;
-import com.codingame.game.map.v2.Block;
+import com.codingame.game.map.block.Block;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
