@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.codingame.com</groupId>
-  <artifactId>tile-master</artifactId>
+  <artifactId>painted</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
