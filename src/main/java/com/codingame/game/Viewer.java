@@ -13,6 +13,7 @@ import static java.util.stream.IntStream.range;
 import com.codingame.game.map.Robot;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.entities.TextBasedEntity.TextAlign;
 import java.util.List;
 import java.util.function.UnaryOperator;
 import lombok.Getter;
@@ -88,24 +89,57 @@ public class Viewer {
         graphics.createSprite().setImage(leagueLevel == 1 ? "background1.png" : "background2.png")
             .setBaseWidth(viewerWidth)
             .setBaseHeight(viewerHeight);
+        int textWidth = 7 * viewerWidth / 53;
         graphics.createBitmapText()
             .setText(players.get(0).getNicknameToken())
             .setFont("Minecraft")
-            .setFontSize(75)
-            .setX(viewerWidth/100)
-            .setY(viewerHeight / 5)
-            .setRotation(Math.PI);
+            .setFontSize(45)
+            .setX(viewerWidth / 120)
+            .setY(21 * viewerHeight / 100)
+            .setRotation(Math.PI)
+            .setTextAlign(TextAlign.CENTER)
+            .setMaxWidth(textWidth);
         graphics.createSprite()
             .setImage(players.get(0).getAvatarToken())
-            .setX(24*viewerWidth/530)
-            .setY(95*viewerHeight/300)
-            .setBaseWidth(100)
-            .setBaseHeight(100);
-        if(leagueLevel<3){
-
-        }else{
-
+            .setX(24 * viewerWidth / 530)
+            .setY(95 * viewerHeight / 300)
+            .setY(95 * viewerHeight / 300)
+            .setBaseWidth(100 * viewerWidth / 1920)
+            .setBaseHeight(100 * viewerHeight / 1080);
+        if (players.size() == 2) {
+            graphics.createBitmapText()
+                .setText(players.get(1).getNicknameToken())
+                .setFont("Minecraft")
+                .setFontSize(45)
+                .setX(viewerWidth - textWidth + viewerWidth / 120)
+                .setY(21 * viewerHeight / 100)
+                .setRotation(Math.PI)
+                .setTextAlign(TextAlign.CENTER)
+                .setMaxWidth(textWidth);
+            graphics.createSprite()
+                .setImage(players.get(1).getAvatarToken())
+                .setX(viewerWidth - textWidth + 24 * viewerWidth / 530)
+                .setY(95 * viewerHeight / 300)
+                .setBaseWidth(100 * viewerWidth / 1920)
+                .setBaseHeight(100 * viewerHeight / 1080);
+        } else {
+            graphics.createBitmapText()
+                .setText(players.get(2).getNicknameToken())
+                .setFont("Minecraft")
+                .setFontSize(45)
+                .setX(viewerWidth - textWidth + viewerWidth / 120)
+                .setY(21 * viewerHeight / 100)
+                .setRotation(Math.PI)
+                .setTextAlign(TextAlign.CENTER)
+                .setMaxWidth(textWidth);
+            graphics.createSprite()
+                .setImage(players.get(2).getAvatarToken())
+                .setX(24 * viewerWidth / 530)
+                .setY(95 * viewerHeight / 300)
+                .setBaseWidth(100 * viewerWidth / 1920)
+                .setBaseHeight(100 * viewerHeight / 1080);
         }
+
     }
 
     private void initLevel4(List<Robot> robots) {
