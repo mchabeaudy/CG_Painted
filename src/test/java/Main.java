@@ -8,9 +8,9 @@ public class Main {
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
         gameRunner.addAgent(Player1.class, "Bob");
         gameRunner.addAgent(Player1.class, "Alice");
-//        gameRunner.addAgent(Player1.class, "Toto");
-//        gameRunner.addAgent(Player1.class, "Titi");
-        gameRunner.setLeagueLevel(1);
+        gameRunner.addAgent(Player1.class, "Toto");
+        gameRunner.addAgent(Player1.class, "Titi");
+        gameRunner.setLeagueLevel(4);
         gameRunner.start();
     }
 }
