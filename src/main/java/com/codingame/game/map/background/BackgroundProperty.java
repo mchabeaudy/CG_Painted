@@ -41,4 +41,12 @@ public class BackgroundProperty {
     public List<PlayerProperties> getPlayerProperties() {
         return playerProperties;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

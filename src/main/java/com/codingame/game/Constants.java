@@ -20,6 +20,7 @@ public final class Constants {
     public static final int MAP_HEIGHT_LEVEL1 = 15;
     public static final int MAP_WIDTH_LEVEL234 = 24;
     public static final int MAP_HEIGHT_LEVEL234 = 19;
+    public static final int AVATAR_BACKGROUND = 0x737373;
 
 
     public static final BackgroundProperty BG_1 = BackgroundProperty.of(
@@ -48,10 +49,10 @@ public final class Constants {
 
     static {
         BG_1.getPlayerProperties().add(PlayerProperties.of(
-            Square.of(Point.of(293, 1023), Point.of(800, 1631)),
+            Square.of(Point.of(293, 1123), Point.of(800, 1631)),
             Square.of(Point.of(0, 662), Point.of(1100, 906))));
         BG_1.getPlayerProperties().add(PlayerProperties.of(
-            Square.of(Point.of(4544, 1023), Point.of(5051, 1631)),
+            Square.of(Point.of(4544, 1123), Point.of(5051, 1631)),
             Square.of(Point.of(4240, 662), Point.of(5334, 906))));
 
 

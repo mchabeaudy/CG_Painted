@@ -1,5 +1,9 @@
 package com.codingame.game;
 
+import static com.codingame.game.Constants.AVATAR_BACKGROUND;
+import static com.codingame.game.Constants.BG_1;
+import static com.codingame.game.Constants.BG_2;
+import static com.codingame.game.Constants.BG_3;
 import static com.codingame.game.Constants.BOX;
 import static com.codingame.game.Constants.ROBOT1A;
 import static com.codingame.game.Constants.ROBOT1B;
@@ -11,6 +15,8 @@ import static com.codingame.game.map.MapElement.WALL;
 import static java.util.stream.IntStream.range;
 
 import com.codingame.game.map.Robot;
+import com.codingame.game.map.background.BackgroundProperty;
+import com.codingame.game.map.background.PlayerProperties;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.TextBasedEntity.TextAlign;
@@ -86,58 +92,66 @@ public class Viewer {
     }
 
     private void initGraphics(int leagueLevel, List<Player> players) {
-        graphics.createSprite().setImage(leagueLevel == 1 ? "background1.png" : "background2.png")
+        String background;
+        BackgroundProperty backgroundProperty;
+        switch (leagueLevel) {
+            case 1:
+                backgroundProperty = BG_1;
+                background = "background1.png";
+                break;
+            case 2:
+            case 3:
+                backgroundProperty = BG_2;
+                background = "background2.png";
+                break;
+            case 4:
+                backgroundProperty = BG_3;
+                background = "background3.png";
+                break;
+            default:
+                throw new IllegalStateException("not implemented");
+        }
+
+        graphics.createSprite().setImage(background)
             .setBaseWidth(viewerWidth)
             .setBaseHeight(viewerHeight);
-        int textWidth = 7 * viewerWidth / 53;
-        graphics.createBitmapText()
-            .setText(players.get(0).getNicknameToken())
-            .setFont("Minecraft")
-            .setFontSize(45)
-            .setX(viewerWidth / 120)
-            .setY(21 * viewerHeight / 100)
-            .setRotation(Math.PI)
-            .setTextAlign(TextAlign.CENTER)
-            .setMaxWidth(textWidth);
-        graphics.createSprite()
-            .setImage(players.get(0).getAvatarToken())
-            .setX(24 * viewerWidth / 530)
-            .setY(95 * viewerHeight / 300)
-            .setY(95 * viewerHeight / 300)
-            .setBaseWidth(100 * viewerWidth / 1920)
-            .setBaseHeight(100 * viewerHeight / 1080);
-        if (players.size() == 2) {
+
+        PlayerProperties prop0 = backgroundProperty.getPlayerProperties().get(0);
+        int textWidth = prop0.getName().getWidth() * viewerWidth
+            / backgroundProperty.getWidth();
+
+        for (int i = 0; i < gameManager.getPlayerCount(); i++) {
+            Player player = players.get(i);
+            PlayerProperties property = backgroundProperty.getPlayerProperties().get(i);
+            graphics.createRectangle()
+                .setFillColor(AVATAR_BACKGROUND)
+                .setX(property.getAvatar().getXMin() * viewerWidth / backgroundProperty.getWidth())
+                .setWidth(
+                    property.getAvatar().getWidth() * viewerWidth / backgroundProperty.getWidth())
+                .setY(
+                    property.getAvatar().getYMin() * viewerHeight / backgroundProperty.getHeight())
+                .setHeight(property.getAvatar().getHeight() * viewerHeight
+                    / backgroundProperty.getHeight());
+
             graphics.createBitmapText()
-                .setText(players.get(1).getNicknameToken())
+                .setText(player.getNicknameToken())
                 .setFont("Minecraft")
                 .setFontSize(45)
-                .setX(viewerWidth - textWidth + viewerWidth / 120)
-                .setY(21 * viewerHeight / 100)
+                .setX(property.getName().getXMin() * viewerWidth / backgroundProperty.getWidth())
+                .setY(property.getName().getYMin() * viewerHeight / backgroundProperty.getHeight())
                 .setRotation(Math.PI)
-                .setTextAlign(TextAlign.CENTER)
+                .setTextAlign(TextAlign.LEFT)
                 .setMaxWidth(textWidth);
             graphics.createSprite()
-                .setImage(players.get(1).getAvatarToken())
-                .setX(viewerWidth - textWidth + 24 * viewerWidth / 530)
-                .setY(95 * viewerHeight / 300)
-                .setBaseWidth(100 * viewerWidth / 1920)
-                .setBaseHeight(100 * viewerHeight / 1080);
-        } else {
-            graphics.createBitmapText()
-                .setText(players.get(2).getNicknameToken())
-                .setFont("Minecraft")
-                .setFontSize(45)
-                .setX(viewerWidth - textWidth + viewerWidth / 120)
-                .setY(21 * viewerHeight / 100)
-                .setRotation(Math.PI)
-                .setTextAlign(TextAlign.CENTER)
-                .setMaxWidth(textWidth);
-            graphics.createSprite()
-                .setImage(players.get(2).getAvatarToken())
-                .setX(24 * viewerWidth / 530)
-                .setY(95 * viewerHeight / 300)
-                .setBaseWidth(100 * viewerWidth / 1920)
-                .setBaseHeight(100 * viewerHeight / 1080);
+                .setImage(player.getAvatarToken())
+                .setX(property.getAvatar().getXMin() * viewerWidth / backgroundProperty.getWidth())
+                .setY(
+                    property.getAvatar().getYMin() * viewerHeight / backgroundProperty.getHeight())
+                .setBaseWidth(
+                    property.getAvatar().getWidth() * viewerWidth / backgroundProperty.getWidth())
+                .setBaseHeight(
+                    prop0.getAvatar().getHeight() * viewerHeight / backgroundProperty.getHeight());
+
         }
 
     }

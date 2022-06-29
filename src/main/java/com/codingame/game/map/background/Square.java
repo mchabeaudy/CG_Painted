@@ -8,7 +8,8 @@ public class Square {
     private final int yMin;
     private final int xMax;
     private final int yMax;
-    private final int size;
+    private final int width;
+    private final int height;
 
     public Square(Point upLeft, Point downRight)
     {
@@ -16,7 +17,8 @@ public class Square {
         yMin = upLeft.getY();
         xMax = downRight.getX();
         yMax = downRight.getY();
-        size = xMax - xMin;
+        width = xMax - xMin;
+        height = yMax - yMin;
     }
 
     public int getXMin() {
@@ -35,8 +37,12 @@ public class Square {
         return yMax;
     }
 
-    public int getSize() {
-        return size;
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public static Square of(Point upLeft, Point downRight)
