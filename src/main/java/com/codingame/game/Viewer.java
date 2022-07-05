@@ -18,6 +18,7 @@ import com.codingame.game.map.Robot;
 import com.codingame.game.map.background.BackgroundProperty;
 import com.codingame.game.map.background.PlayerProperties;
 import com.codingame.gameengine.core.MultiplayerGameManager;
+import com.codingame.gameengine.module.entities.BitmapText;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.TextBasedEntity.TextAlign;
 import java.util.List;
@@ -43,6 +44,8 @@ public class Viewer {
     private UnaryOperator<Integer> xConvertor;
     private UnaryOperator<Integer> yConvertor;
     private Board board;
+    private BitmapText score1;
+    private BitmapText score2;
 
     public void init(Board board, List<Robot> robots, int leagueLevel, List<Player> players) {
         this.robots = robots;
@@ -62,17 +65,17 @@ public class Viewer {
         range(0, height).forEach(y -> {
             int yG = height - y - 1;
             range(0, width).forEach(x ->
-                tiles[y][x] = new TileUI(startX + x * tileWidth,
-                    gap + yG * tileWidth, this,
-                    board.getGameMap().getElements()[y][x])
+                    tiles[y][x] = new TileUI(startX + x * tileWidth,
+                            gap + yG * tileWidth, this,
+                            board.getGameMap().getElements()[y][x])
             );
         });
 
         board.getGameMap().getTeleports()
-            .forEach(tp -> new UnitUI(this, tp.getGroupId() == 1 ? TELEPORT1 : TELEPORT2, tp.getX(),
-                tp.getY()));
+                .forEach(tp -> new UnitUI(this, tp.getGroupId() == 1 ? TELEPORT1 : TELEPORT2, tp.getX(),
+                        tp.getY()));
         board.getGameMap().getBoxes()
-            .forEach(box -> new UnitUI(this, BOX, box.getX(), box.getY()));
+                .forEach(box -> new UnitUI(this, BOX, box.getX(), box.getY()));
 
         switch (leagueLevel) {
             case 1:
@@ -113,46 +116,73 @@ public class Viewer {
         }
 
         graphics.createSprite().setImage(background)
-            .setBaseWidth(viewerWidth)
-            .setBaseHeight(viewerHeight);
+                .setBaseWidth(viewerWidth)
+                .setBaseHeight(viewerHeight);
 
         PlayerProperties prop0 = backgroundProperty.getPlayerProperties().get(0);
         int textWidth = prop0.getName().getWidth() * viewerWidth
-            / backgroundProperty.getWidth();
+                / backgroundProperty.getWidth();
 
         for (int i = 0; i < gameManager.getPlayerCount(); i++) {
             Player player = players.get(i);
             PlayerProperties property = backgroundProperty.getPlayerProperties().get(i);
             graphics.createRectangle()
-                .setFillColor(AVATAR_BACKGROUND)
-                .setX(property.getAvatar().getXMin() * viewerWidth / backgroundProperty.getWidth())
-                .setWidth(
-                    property.getAvatar().getWidth() * viewerWidth / backgroundProperty.getWidth())
-                .setY(
-                    property.getAvatar().getYMin() * viewerHeight / backgroundProperty.getHeight())
-                .setHeight(property.getAvatar().getHeight() * viewerHeight
-                    / backgroundProperty.getHeight());
+                    .setFillColor(AVATAR_BACKGROUND)
+                    .setX(property.getAvatar().getXMin() * viewerWidth / backgroundProperty.getWidth())
+                    .setWidth(
+                            property.getAvatar().getWidth() * viewerWidth / backgroundProperty.getWidth())
+                    .setY(
+                            property.getAvatar().getYMin() * viewerHeight / backgroundProperty.getHeight())
+                    .setHeight(property.getAvatar().getHeight() * viewerHeight
+                            / backgroundProperty.getHeight());
 
             graphics.createBitmapText()
-                .setText(player.getNicknameToken())
-                .setFont("Minecraft")
-                .setFontSize(45)
-                .setX(property.getName().getXMin() * viewerWidth / backgroundProperty.getWidth())
-                .setY(property.getName().getYMin() * viewerHeight / backgroundProperty.getHeight())
-                .setRotation(Math.PI)
-                .setTextAlign(TextAlign.LEFT)
-                .setMaxWidth(textWidth);
+                    .setText(player.getNicknameToken())
+                    .setFont("Minecraft")
+                    .setFontSize(45)
+                    .setX(property.getName().getXMin() * viewerWidth / backgroundProperty.getWidth())
+                    .setY(property.getName().getYMin() * viewerHeight / backgroundProperty.getHeight())
+                    .setRotation(Math.PI)
+                    .setTextAlign(TextAlign.LEFT)
+                    .setMaxWidth(textWidth);
             graphics.createSprite()
-                .setImage(player.getAvatarToken())
-                .setX(property.getAvatar().getXMin() * viewerWidth / backgroundProperty.getWidth())
-                .setY(
-                    property.getAvatar().getYMin() * viewerHeight / backgroundProperty.getHeight())
-                .setBaseWidth(
-                    property.getAvatar().getWidth() * viewerWidth / backgroundProperty.getWidth())
-                .setBaseHeight(
-                    prop0.getAvatar().getHeight() * viewerHeight / backgroundProperty.getHeight());
+                    .setImage(player.getAvatarToken())
+                    .setX(property.getAvatar().getXMin() * viewerWidth / backgroundProperty.getWidth())
+                    .setY(
+                            property.getAvatar().getYMin() * viewerHeight / backgroundProperty.getHeight())
+                    .setBaseWidth(
+                            property.getAvatar().getWidth() * viewerWidth / backgroundProperty.getWidth())
+                    .setBaseHeight(
+                            prop0.getAvatar().getHeight() * viewerHeight / backgroundProperty.getHeight());
 
         }
+        score1 = graphics.createBitmapText()
+                .setText("0")
+                .setFont("americanCaptain")
+                .setFontSize(backgroundProperty.getTeamOneScore().getHeight() / 2)
+                .setX((backgroundProperty.getTeamOneScore().getXMin()
+                        + backgroundProperty.getTeamOneScore().getWidth() / 10) * viewerWidth
+                        / backgroundProperty.getWidth())
+                .setY((backgroundProperty.getTeamOneScore().getYMin()
+                        + backgroundProperty.getTeamOneScore().getHeight() / 10) * viewerHeight
+                        / backgroundProperty.getHeight())
+                .setRotation(Math.PI)
+                .setTextAlign(TextAlign.RIGHT)
+                .setMaxWidth(textWidth);
+        score2 = graphics.createBitmapText()
+                .setText("0")
+                .setFont("americanCaptain")
+                .setFontSize(backgroundProperty.getTeamOneScore().getHeight() / 2)
+                .setX((backgroundProperty.getTeamTwoScore().getXMin()
+                        + backgroundProperty.getTeamTwoScore().getWidth() / 10) * viewerWidth
+                        / backgroundProperty.getWidth())
+                .setY((backgroundProperty.getTeamTwoScore().getYMin()
+                        + backgroundProperty.getTeamTwoScore().getHeight() / 10) * viewerHeight
+                        / backgroundProperty.getHeight())
+                .setRotation(Math.PI)
+                .setTextAlign(TextAlign.RIGHT)
+                .setMaxWidth(textWidth);
+
 
     }
 
@@ -182,17 +212,17 @@ public class Viewer {
 
     private void addBox(int startX, int fontSize, int x, int y) {
         getGraphics().createSprite()
-            .setImage("box.png")
-            .setBaseWidth(getTileWidth())
-            .setBaseHeight(getTileWidth())
-            .setX(startX + x * tileWidth)
-            .setY(tileWidth / 2 + y * tileWidth - fontSize / 2);
+                .setImage("box.png")
+                .setBaseWidth(getTileWidth())
+                .setBaseHeight(getTileWidth())
+                .setX(startX + x * tileWidth)
+                .setY(tileWidth / 2 + y * tileWidth - fontSize / 2);
     }
 
 
     public void paint(List<Robot> robots) {
         robots.stream().map(Robot::getUi)
-            .forEach(u -> tiles[u.getY()][u.getX()].setElement(u.getMapElement()));
+                .forEach(u -> tiles[u.getY()][u.getX()].setElement(u.getMapElement()));
     }
 
 
@@ -212,4 +242,8 @@ public class Viewer {
         return true;
     }
 
+    public void updateScores(int score1, int score2) {
+        this.score1.setText(String.valueOf(score1));
+        this.score2.setText(String.valueOf(score2));
+    }
 }

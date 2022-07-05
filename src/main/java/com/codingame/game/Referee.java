@@ -1,5 +1,8 @@
 package com.codingame.game;
 
+import static com.codingame.game.map.MapElement.TEAM1;
+import static com.codingame.game.map.MapElement.TEAM2;
+
 import com.codingame.game.action.Action;
 import com.codingame.game.action.InvalidAction;
 import com.codingame.game.action.MoveAction;
@@ -39,6 +42,8 @@ public class Referee extends AbstractReferee {
     private final Random random = new Random();
     private static final int MAX_TURN = 100;
 
+    private int team1Score = 0;
+    private int team2Score = 0;
 
     private int playerCount;
     private int turn;
@@ -141,6 +146,7 @@ public class Referee extends AbstractReferee {
         handleActions();
         calculateState();
         viewer.paint(robots);
+        calculateScore();
         if (turn == MAX_TURN) {
             endGame();
         }
@@ -179,6 +185,25 @@ public class Referee extends AbstractReferee {
             player.sendInputLine(Integer.toString(robots.size() / gameManager.getPlayerCount()));
             sendDisplayableToInput(board.getGameMap().getTeleports(), player);
         }
+    }
+
+    private void calculateScore() {
+        int score1 = 0;
+        int score2 = 0;
+        for(TileUI[] line : viewer.getTiles())
+        {
+            for (TileUI tile: line)
+            {
+                if(tile.getElement()==TEAM1){
+                    score1++;
+                } else if (tile.getElement() == TEAM2) {
+                    score2++;
+                }
+            }
+        }
+        team1Score = score1;
+        team2Score = score2;
+        viewer.updateScores(score1, score2);
     }
 
     private void calculateState() {
