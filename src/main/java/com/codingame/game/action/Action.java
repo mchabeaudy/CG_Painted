@@ -26,6 +26,7 @@ public class Action {
         MoveAction move = MoveAction.fromString(args[0])
                 .orElseThrow(() -> new InvalidAction("Unknown action : " + args[0]));
         builder.moveAction(move);
+        builder.message(input);
 
         switch (move) {
             case WAIT:

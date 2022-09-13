@@ -5,6 +5,7 @@ import static com.codingame.game.Constants.BG_1;
 import static com.codingame.game.Constants.BG_2;
 import static com.codingame.game.Constants.BG_3;
 import static com.codingame.game.Constants.BOX;
+import static com.codingame.game.Constants.NAME_FONT_SIZE;
 import static com.codingame.game.Constants.ROBOT1A;
 import static com.codingame.game.Constants.ROBOT1B;
 import static com.codingame.game.Constants.ROBOT2A;
@@ -139,7 +140,7 @@ public class Viewer {
             graphics.createBitmapText()
                     .setText(player.getNicknameToken())
                     .setFont("Minecraft")
-                    .setFontSize(45)
+                    .setFontSize(NAME_FONT_SIZE)
                     .setX(property.getName().getXMin() * viewerWidth / backgroundProperty.getWidth())
                     .setY(property.getName().getYMin() * viewerHeight / backgroundProperty.getHeight())
                     .setRotation(Math.PI)
@@ -156,10 +157,12 @@ public class Viewer {
                             prop0.getAvatar().getHeight() * viewerHeight / backgroundProperty.getHeight());
 
         }
+
+
         score1 = graphics.createBitmapText()
                 .setText("0")
                 .setFont("americanCaptain")
-                .setFontSize(backgroundProperty.getTeamOneScore().getHeight() / 2)
+                .setFontSize(backgroundProperty.getScoreFontSize())
                 .setX((backgroundProperty.getTeamOneScore().getXMin()
                         + backgroundProperty.getTeamOneScore().getWidth() / 10) * viewerWidth
                         / backgroundProperty.getWidth())
@@ -172,7 +175,7 @@ public class Viewer {
         score2 = graphics.createBitmapText()
                 .setText("0")
                 .setFont("americanCaptain")
-                .setFontSize(backgroundProperty.getTeamOneScore().getHeight() / 2)
+                .setFontSize(backgroundProperty.getScoreFontSize())
                 .setX((backgroundProperty.getTeamTwoScore().getXMin()
                         + backgroundProperty.getTeamTwoScore().getWidth() / 10) * viewerWidth
                         / backgroundProperty.getWidth())
@@ -187,7 +190,7 @@ public class Viewer {
     }
 
     private void initLevel4(List<Robot> robots) {
-        robots.get(0).setUi(new UnitUI(this, ROBOT1A, 1, 1, 1));
+        robots.get(0).setUi(new UnitUI(this, ROBOT1A, 1, 8, 1));
         robots.get(1).setUi(new UnitUI(this, ROBOT1A, 3, 8, 1));
         robots.get(2).setUi(new UnitUI(this, ROBOT1B, 1, 10, 1));
         robots.get(3).setUi(new UnitUI(this, ROBOT1B, 3, 10, 1));

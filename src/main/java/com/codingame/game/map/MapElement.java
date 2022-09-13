@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum MapElement {
-    WALL("X", "wall.png"),
-    NEUTRAL("0", "ground-tile.png"),
+    WALL("W", "wall.png"),
+    NEUTRAL("E", "ground-tile.png"),
     TEAM1("1", "green-tile.png"),
     TEAM2("2", "magenta-tile.jpg");
     private final String display;

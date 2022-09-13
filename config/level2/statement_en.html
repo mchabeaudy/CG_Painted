@@ -1,3 +1,143 @@
 <div class="statement-body">
+  <!-- GOAL -->
+  <div class="statement-section statement-goal">
+    <h1><span class="icon icon-goal">&nbsp;</span> <span>Goal</span></h1>
 
+    <div class="statement-goal-content">Equipped with painting robots you will have to paint the
+      largest area before the time runs out.
+      <p>Source code is accessible <a href="https://github.com/mchabeaudy/CG_Painted"
+                                      target="_blank" rel="nofollow noopener noreferrer">here</a>.
+      </p>
+    </div>
+
+  </div>
+  <div class="statement-section statement-rules">
+    <h1><span class="icon icon-rules">&nbsp;</span> <span>Rules</span></h1>
+
+    <div>
+      <div class="statement-rules-content">
+        During this painting battle you will have to give
+        <const>INSTRUCTION</const>
+        to your robot.<br>
+        <ol>
+          <li>MOVE : Your robot will move</li>
+          <li>WAIT : Your robot will not do anything</li>
+        </ol>
+        <br>
+        A
+        <const>MOVE</const>
+        instruction must be followed by a
+        <const>DIRECTION</const>
+        .
+        <ol>
+          <li>RIGHT</li>
+          <li>LEFT</li>
+          <li>UP</li>
+          <li>DOWN</li>
+        </ol>
+        <br>
+        When your robot moves it automatically paints the square on which it arrives.<br>
+        In case of conflict (2 or more robots that want to go on the same square), the robot with
+        the biggest initiative will move on the square while other robots will remain on their
+        space.<br>
+        <br>
+        <b>Chronology</b><br>
+        <br>
+        In this level there is only one step:<br>
+        Robots MOVE action is performed<br>
+        <br>
+        The game stands for 100 turns.<br>
+        Good luck!<br>
+
+        <!-- Victory conditions -->
+        <div class="statement-victory-conditions">
+          <div class="icon victory">&nbsp;</div>
+          <div class="blk">
+            <div class="title">Victory conditions</div>
+            <div class="text">
+              <ul style="padding-bottom: 0; margin-bottom: 0;">
+                <li>Your team painted the most square after 100 turns.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lose conditions -->
+        <div class="statement-lose-conditions">
+          <div class="icon lose">&nbsp;</div>
+          <div class="blk">
+            <div class="title">Lose conditions</div>
+            <div class="text">
+              <ul style="padding-bottom: 0; margin-bottom: 0;">
+                <li>Your program input not well formatted.</li>
+                <li>Your program input is invalid.</li>
+                <li>Your program doesn't provide an input.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="statement-section statement-protocol">
+    <h1><span class="icon icon-protocol">&nbsp;</span> <span>Game input</span></h1>
+    <!-- Protocol block -->
+    <div class="blk">
+      <div class="title">Input for a turn</div>
+      <div class="text">
+        <p><span class="statement-lineno">First you receive : </span> 8 integers <var>playerId</var>,
+          <var>team</var>, <var>boardWidth</var>, <var>boardHeight</var>, <var>tpCount</var>, <var>boxCount</var>,
+          <var>robotCount</var>, <var>robotPerPlayer</var> where:</p>
+        <ul>
+          <li><var>playerId</var> : your player id</li>
+          <li><var>teamId</var> : your team id</li>
+          <li><var>boardWidth</var> : the board width</li>
+          <li><var>boardHeight</var> : the board height</li>
+          <li><var>tpCount</var> : number of teleport portal (0 in this lelvel)</li>
+          <li><var>boxCount</var> : number of boxes (0 in this level)</li>
+          <li><var>robotCount</var> : number of all robots</li>
+          <li><var>robotPerPlayer</var> : number of robot per player (1 in this level)</li>
+        </ul>
+        <br>
+        Then you receive <var>tpCount</var> lines of 3 input not used in this level<br>
+        <br>
+        Now start the game loop<br>
+        You receive <var>boardHeight</var> characters lines representing the map.<br>
+        E for empty square, W for a wall, an integer (team id) for a painted square. In this league
+        there is no wall.<br>
+        <br>
+        You will receive <var>robotCount</var> lines of 6 integer that describe robots:<br>
+        <ul>
+          <li><var>robotId</var> : robot id</li>
+          <li><var>robotX</var> : x robot position</li>
+          <li><var>robotY</var> : y robot position</li>
+          <li><var>robotOwner</var> : id of robot owner</li>
+          <li><var>robotTeam</var> : team id of the robot</li>
+          <li><var>robotInit</var> : robot initiative (used in case of conflict)</li>
+          <li><var>robotCount</var> : number of all robots</li>
+          <li><var>robotPerPlayer</var> : number of robot per player (1 in this level)</li>
+        </ul>
+        You will then receive <var>boxCount</var> lines of 2 integers that describe boxes
+        position:<br>
+        <ul>
+          <li><var>boxX</var> : x box position</li>
+          <li><var>boxY</var> : y box position</li>
+        </ul>
+      </div>
+
+      <p><span class="statement-lineno"><var>playerCount</var> following lines : </span> one line
+        for each player. First line is for player 0, next one for player 1, etc. Each line contains
+        3 integers <var>startUpId</var> start-up id, <var>marketShare</var> start-up market share in
+        thousandths and <var>reputation</var> start-up reputation</span> </p>
+    </div>
+    <div class="blk">
+      <div class="title">Output for a turn</div>
+      <div class="text"><var>robotPerPlayer</var> lines (one line in this level) containing robot
+        instruction
+      </div>
+    </div>
+
+  </div>
 </div>

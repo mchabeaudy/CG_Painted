@@ -190,11 +190,9 @@ public class Referee extends AbstractReferee {
     private void calculateScore() {
         int score1 = 0;
         int score2 = 0;
-        for(TileUI[] line : viewer.getTiles())
-        {
-            for (TileUI tile: line)
-            {
-                if(tile.getElement()==TEAM1){
+        for (TileUI[] line : viewer.getTiles()) {
+            for (TileUI tile : line) {
+                if (tile.getElement() == TEAM1) {
                     score1++;
                 } else if (tile.getElement() == TEAM2) {
                     score2++;

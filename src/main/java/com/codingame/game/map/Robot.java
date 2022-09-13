@@ -25,7 +25,7 @@ public class Robot implements Displayable {
 
     @Override
     public String toDisplay() {
-        return "" + ui.getX() + " " + ui.getY() + " " + playerId + " " + team + " " + init + " "+ id;
+        return "" + id + " " + ui.getX() + " " + ui.getY() + " " + playerId + " " + team + " " + init;
     }
 
     public void nextInit(int robotCount) {

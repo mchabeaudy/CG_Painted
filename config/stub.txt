@@ -1,5 +1,5 @@
 read playerId:int
-read team:int
+read teamId:int
 read boardWidth:int
 read boardHeight:int
 read tpCount:int
@@ -9,16 +9,16 @@ read robotPerPlayer:int
 loop tpCount read tpX:int tpY:int tpGroupId:int
 gameloop
 loop boardHeight read line:word(24)
-loop robotCount read robotX:int robotY:int robotOwner:int robotTeam:int robotInit:int robotId:int
+loop robotCount read robotId:int robotX:int robotY:int robotOwner:int robotTeam:int robotInit:int
 loop boxCount read boxX:int boxY:int
 loop robotPerPlayer write WAIT
 
 STATEMENT
-Paint or be painted, that's the question.
+Paint or be painted
 
 INPUT
 playerId: your player id
-team: your team id
+teamId: your team id
 boardWidth: width of the board
 boardHeight: height of the board
 tpCount: number of teleport
