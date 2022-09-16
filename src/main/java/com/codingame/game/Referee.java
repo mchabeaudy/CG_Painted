@@ -263,7 +263,7 @@ public class Referee extends AbstractReferee {
 
     private void sendInput(Player player) {
         for (int y = 0; y < board.getHeight(); y++) {
-            TileUI[] tilesLine = viewer.getTiles()[y];
+            TileUI[] tilesLine = viewer.getTiles()[board.getHeight() - y - 1];
             String line = Arrays.stream(tilesLine).map(t -> t.getElement().getDisplay())
                     .collect(Collectors.joining());
             player.sendInputLine(line);
@@ -280,6 +280,8 @@ public class Referee extends AbstractReferee {
     }
 
     private void endGame() {
+        gameManager.getPlayers().forEach(p -> p.setScore(
+                Integer.parseInt((p.getTeamId() == 1 ? viewer.getScore1() : viewer.getScore2()).getText())));
         gameManager.endGame();
     }
 

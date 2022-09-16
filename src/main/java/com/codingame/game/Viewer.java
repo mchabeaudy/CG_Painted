@@ -143,7 +143,6 @@ public class Viewer {
                     .setFontSize(NAME_FONT_SIZE)
                     .setX(property.getName().getXMin() * viewerWidth / backgroundProperty.getWidth())
                     .setY(property.getName().getYMin() * viewerHeight / backgroundProperty.getHeight())
-                    .setRotation(Math.PI)
                     .setTextAlign(TextAlign.LEFT)
                     .setMaxWidth(textWidth);
             graphics.createSprite()
@@ -169,7 +168,6 @@ public class Viewer {
                 .setY((backgroundProperty.getTeamOneScore().getYMin()
                         + backgroundProperty.getTeamOneScore().getHeight() / 10) * viewerHeight
                         / backgroundProperty.getHeight())
-                .setRotation(Math.PI)
                 .setTextAlign(TextAlign.RIGHT)
                 .setMaxWidth(textWidth);
         score2 = graphics.createBitmapText()
@@ -182,7 +180,6 @@ public class Viewer {
                 .setY((backgroundProperty.getTeamTwoScore().getYMin()
                         + backgroundProperty.getTeamTwoScore().getHeight() / 10) * viewerHeight
                         / backgroundProperty.getHeight())
-                .setRotation(Math.PI)
                 .setTextAlign(TextAlign.RIGHT)
                 .setMaxWidth(textWidth);
 

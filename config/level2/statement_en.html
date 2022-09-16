@@ -37,14 +37,21 @@
         </ol>
         <br>
         When your robot moves it automatically paints the square on which it arrives.<br>
-        In case of conflict (2 or more robots that want to go on the same square), the robot with
-        the biggest initiative will move on the square while other robots will remain on their
+        If the square was already painted by the other team, your robot will paint over it<br>
+        <br>
+        In case of conflict (2 or more robots that want to go on the same square):<br>
+        The robot with the biggest initiative will move on the square while other robots will remain
+        on their
         space.<br>
+        <br>
+        Now there are walls on the map. Robots cannot paint or walk on walls.<br>
+        At the beginning of each round a new random map is generated so walls are not in the same
+        position.<br>
         <br>
         <b>Chronology</b><br>
         <br>
         In this level there is only one step:<br>
-        Robots MOVE action is performed<br>
+        Robots MOVE actions are performed<br>
         <br>
         The game stands for 100 turns.<br>
         Good luck!<br>
@@ -98,17 +105,16 @@
           <li><var>tpCount</var> : number of teleport portal (0 in this lelvel)</li>
           <li><var>boxCount</var> : number of boxes (0 in this level)</li>
           <li><var>robotCount</var> : number of all robots</li>
-          <li><var>robotPerPlayer</var> : number of robot per player (1 in this level)</li>
+          <li><var>robotPerPlayer</var> : number of robot per player (2 in this level)</li>
         </ul>
         <br>
         Then you receive <var>tpCount</var> lines of 3 input not used in this level<br>
         <br>
         Now start the game loop<br>
         You receive <var>boardHeight</var> characters lines representing the map.<br>
-        E for empty square, W for a wall, an integer (team id) for a painted square. In this league
-        there is no wall.<br>
+        E for empty square, W for wall, an integer (team id) for a painted square<br>
         <br>
-        You will receive <var>robotCount</var> lines of 6 integer that describe robots:<br>
+        You will receive <var>robotCount</var> lines of 6 integers that describe robots:<br>
         <ul>
           <li><var>robotId</var> : robot id</li>
           <li><var>robotX</var> : x robot position</li>
@@ -117,7 +123,7 @@
           <li><var>robotTeam</var> : team id of the robot</li>
           <li><var>robotInit</var> : robot initiative (used in case of conflict)</li>
           <li><var>robotCount</var> : number of all robots</li>
-          <li><var>robotPerPlayer</var> : number of robot per player (1 in this level)</li>
+          <li><var>robotPerPlayer</var> : number of robot per player (2 in this level)</li>
         </ul>
         You will then receive <var>boxCount</var> lines of 2 integers that describe boxes
         position:<br>
@@ -127,10 +133,6 @@
         </ul>
       </div>
 
-      <p><span class="statement-lineno"><var>playerCount</var> following lines : </span> one line
-        for each player. First line is for player 0, next one for player 1, etc. Each line contains
-        3 integers <var>startUpId</var> start-up id, <var>marketShare</var> start-up market share in
-        thousandths and <var>reputation</var> start-up reputation</span> </p>
     </div>
     <div class="blk">
       <div class="title">Output for a turn</div>

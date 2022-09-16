@@ -16,7 +16,7 @@ public final class Constants {
     public static final String TELEPORT2 = "tp-02.png";
     public static final String BOX = "box.png";
 
-    public static final int NAME_FONT_SIZE = 60;
+    public static final int NAME_FONT_SIZE = 30;
     public static final int MAP_WIDTH_LEVEL1 = 15;
     public static final int MAP_HEIGHT_LEVEL1 = 15;
     public static final int MAP_WIDTH_LEVEL234 = 24;
@@ -30,7 +30,7 @@ public final class Constants {
             new ArrayList<>(),
             5334,
             3000,
-            175
+            88
     );
 
     public static final BackgroundProperty BG_2 = BackgroundProperty.of(
@@ -39,7 +39,7 @@ public final class Constants {
             new ArrayList<>(),
             4000,
             2250,
-            124
+            62
     );
 
     public static final BackgroundProperty BG_3 = BackgroundProperty.of(
@@ -48,7 +48,7 @@ public final class Constants {
             new ArrayList<>(),
             4000,
             2250,
-            124
+            62
     );
 
     static {
