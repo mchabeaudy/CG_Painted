@@ -218,7 +218,7 @@ public class Referee extends AbstractReferee {
 
     private void sendInput(Player player) {
         for (int y = 0; y < board.getHeight(); y++) {
-            TileUI[] tilesLine = viewer.getTiles()[board.getHeight() - y - 1];
+            TileUI[] tilesLine = viewer.getTiles()[y];
             String line = Arrays.stream(tilesLine).map(t -> t.getElement().getDisplay())
                     .collect(Collectors.joining());
             player.sendInputLine(line);

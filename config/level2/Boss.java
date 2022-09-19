@@ -29,7 +29,6 @@ class Player {
         while (true) {
             for (int i = 0; i < boardHeight; i++) {
                 String line = in.next();
-                System.err.println(line);
             }
             for (int i = 0; i < robotCount; i++) {
                 int robotId = in.nextInt();
@@ -44,9 +43,6 @@ class Player {
                 int boxY = in.nextInt();
             }
             for (int i = 0; i < robotPerPlayer; i++) {
-
-                // Write an action using System.out.println()
-                // To debug: System.err.println("Debug messages...");
                 switch (random.nextInt(4)) {
                     case 0:
                         System.out.println("MOVE DOWN");

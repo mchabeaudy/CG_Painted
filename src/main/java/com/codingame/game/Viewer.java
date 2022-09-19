@@ -68,9 +68,9 @@ public class Viewer {
         xConvertor = x -> startX + x * tileWidth + tileWidth / 15;
         yConvertor = y -> gap + y * tileWidth + tileWidth / 15;
         range(0, height).forEach(y -> {
-            int yG = height - y - 1;
+            int yG = y;
             range(0, width).forEach(x ->
-                    tiles[height - 1 - y][x] = new TileUI(startX + x * tileWidth,
+                    tiles[y][x] = new TileUI(startX + x * tileWidth,
                             gap + yG * tileWidth, this,
                             board.getGameMap().getElements()[y][x])
             );

@@ -1,12 +1,17 @@
+import static java.util.stream.IntStream.range;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class Player1 {
 
     private static Random random = new Random();
+
+    static List<Square> squares;
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
@@ -18,9 +23,11 @@ public class Player1 {
         int boxCount = in.nextInt(); // number of boxes
         int robotCount = in.nextInt(); // number of robots
         int robotPerPlayer = in.nextInt(); // number of robots per player
+        List<Point> tps = new ArrayList<>();
         for (int i = 0; i < tpCount; i++) {
             int tpX = in.nextInt();
             int tpY = in.nextInt();
+            tps.add(new Point(tpX, tpY));
             int tpGroupId = in.nextInt();
         }
 
@@ -29,8 +36,11 @@ public class Player1 {
             List<Robot> robots = new ArrayList<>();
             List<Robot> myRobots = new ArrayList<>();
             List<Box> boxes = new ArrayList<>();
+            squares = new ArrayList<>();
             for (int i = 0; i < boardHeight; i++) {
+                int y = i;
                 String line = in.next();
+                range(0, line.length()).forEach(x -> squares.add(new Square(x, y, line.charAt(x))));
                 System.err.println(line);
             }
             for (int i = 0; i < robotCount; i++) {
@@ -42,7 +52,7 @@ public class Player1 {
                 int robotInit = in.nextInt();
                 Robot robot = new Robot(robotX, robotY, robotId, robotOwner, robotTeam, robotInit);
                 robots.add(robot);
-                if(robotOwner==playerId){
+                if (robotOwner == playerId) {
                     myRobots.add(robot);
                 }
             }
@@ -55,34 +65,75 @@ public class Player1 {
 
                 // Write an action using System.out.println()
                 // To debug: System.err.println("Debug messages...");
+
                 Robot robot = myRobots.get(i);
-                Box box = boxes.stream().filter(b -> b.dist2(robot) == 1).findAny().orElse(null);
-                if (Objects.nonNull(box)) {
-                    if(random.nextBoolean()){
-                        System.out.println("PUSH UP");
-                    }else{
-                        System.out.println("PULL DOWN");
-                    }
-                    System.err.println("Robot : "+robot.x+" "+robot.y+"  box : "+box.x+" "+box.y);
+
+                Square nextEmpty =
+                        toNextEmpty(robot, robots.stream().filter(r -> r.getRobotId() != robot.getRobotId())
+                                .collect(Collectors.toList()));
+                if (nextEmpty == null) {
+                    System.out.println("WAIT");
+                } else if (nextEmpty.x > robot.x) {
+                    System.out.println("MOVE RIGHT");
+                } else if (nextEmpty.x < robot.x) {
+                    System.out.println("MOVE LEFT");
+                } else if (nextEmpty.y > robot.y) {
+                    System.out.println("MOVE DOWN");
                 } else {
-                    switch (random.nextInt(4)) {
-                        case 0:
-                            System.out.println("MOVE DOWN");
-                            break;
-                        case 1:
-                            System.out.println("MOVE UP");
-                            break;
-                        case 2:
-                            System.out.println("MOVE LEFT");
-                            break;
-                        case 3:
-                            System.out.println("MOVE RIGHT");
-                            break;
-                    }
+                    System.out.println("MOVE UP");
                 }
+
+
             }
         }
     }
+
+    static Square toNextEmpty(Robot robot, List<Robot> others) {
+        List<Square> covered = new ArrayList<>();
+        Square robotSquare = squares.stream().filter(s -> s.dist2(robot) == 0).findAny()
+                .orElseThrow(() -> new IllegalStateException("problem to find square"));
+        Stack<Square> initialPath = new Stack<>();
+        initialPath.add(robotSquare);
+        List<Stack<Square>> paths = new ArrayList<>();
+        paths.add(initialPath);
+        while (true) {
+
+            int cSize = covered.size();
+            List<Stack<Square>> newPaths = new ArrayList<>();
+            for (Stack<Square> p : paths) {
+                Square last = p.peek();
+                List<Square> newSquares = squares.stream()
+                        .filter(s -> last.dist2(s) == 1 && !covered.contains(s) && s.isDifferentFrom('W') && others
+                                .stream().noneMatch(s::hasSameCoordinate))
+                        .collect(Collectors.toList());
+                covered.addAll(newSquares);
+                if (newSquares.isEmpty()) {
+                    newPaths.add(p);
+                } else {
+                    newSquares.stream().map(s -> {
+                                Stack<Square> stack = new Stack<>();
+                                stack.addAll(p);
+                                stack.add(s);
+                                return stack;
+                            })
+                            .forEach(newPaths::add);
+                }
+            }
+            paths = newPaths;
+            System.err.println("paths size : " + paths.size());
+            paths.forEach(p -> System.err.println(
+                    p.stream().map(s -> "" + s.x + " " + s.y).collect(Collectors.joining(", "))));
+            if (cSize == covered.size() || covered.stream().anyMatch(c -> c.isDifferentFrom(robot.getRobotTeam()))) {
+                break;
+            }
+        }
+
+        return paths.stream().filter(p -> p.stream().anyMatch(s -> s.isDifferentFrom(robot.getRobotTeam())))
+                .findAny()
+                .map(p -> p.get(1))
+                .orElse(null);
+    }
+
 
     public static class Point {
 
@@ -96,6 +147,11 @@ public class Player1 {
         public int dist2(Point p) {
             return (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
         }
+
+        public boolean hasSameCoordinate(Point point) {
+            return point.x == x && point.y == y;
+        }
+
     }
 
     public static class Robot extends Point {
@@ -151,5 +207,32 @@ public class Player1 {
         public Box(int x, int y) {
             super(x, y);
         }
+    }
+
+    public static class Square extends Point {
+
+        public char type;
+
+        public Square(int x, int y, char type) {
+            super(x, y);
+            this.type = type;
+        }
+
+        public char getType() {
+            return type;
+        }
+
+        public void setType(char type) {
+            this.type = type;
+        }
+
+        boolean isDifferentFrom(char type) {
+            return this.type != type;
+        }
+
+        boolean isDifferentFrom(int type) {
+            return this.type != String.valueOf(type).charAt(0);
+        }
+
     }
 }
