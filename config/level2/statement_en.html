@@ -16,45 +16,43 @@
 
     <div>
       <div class="statement-rules-content">
-        During this painting battle you will have to give
-        <const>INSTRUCTION</const>
-        to your robot.<br>
-        <ol>
+        During this painting battle you will have to give <const>INSTRUCTION</const> to your
+        robot.<br>
+        <ul>
           <li>MOVE : Your robot will move</li>
           <li>WAIT : Your robot will not do anything</li>
-        </ol>
+        </ul>
         <br>
-        A
-        <const>MOVE</const>
-        instruction must be followed by a
-        <const>DIRECTION</const>
-        .
-        <ol>
-          <li>RIGHT</li>
-          <li>LEFT</li>
-          <li>UP</li>
-          <li>DOWN</li>
-        </ol>
+        The board is made with a square grid where (0,0) coordinate is UPPER LEFT square.<br>
+        A <const>MOVE</const> instruction must be followed by a <const>DIRECTION</const>.
+        <ul>
+          <li>RIGHT - increasing x coordinate</li>
+          <li>LEFT - decreasing x coordinate</li>
+          <li>UP - decreasing y coordinate</li>
+          <li>DOWN - increasing y coordinate</li>
+        </ul>
         <br>
-        When your robot moves it automatically paints the square on which it arrives.<br>
+        If there is no obstacle on your destination your robot will move to it and will
+        automatically paint the square on which it arrives.<br>
         If the square was already painted by the other team, your robot will paint over it<br>
-        <br>
-        In case of conflict (2 or more robots that want to go on the same square):<br>
-        The robot with the biggest initiative will move on the square while other robots will remain
-        on their
-        space.<br>
         <br>
         Now there are walls on the map. Robots cannot paint or walk on walls.<br>
         At the beginning of each round a new random map is generated so walls are not in the same
         position.<br>
         <br>
-        <b>Chronology</b><br>
+        What happen in case of conflict? (2 or more robots that want to take action leading into incompatible position)<br>
+        Robots have an initiative attribute that changes each turn<br>
+        Robots perform their action sequentially starting with the robot with the lowest initiative<br>
+        Exemple: <br>
+        <ul>
+          <li>Robot 1 : x=5, y=5, init=1, action=MOVE RIGHT</li>
+          <li>Robot 2 : x=7, y=5, init=2, action=MOVE LEFT</li>
+        </ul>
+        Robot 1 will move first on (6,5) because it has a lower initiative.<br>
+        Then Robot 2 will not do anything as square (6,5) is not empty.<br>
         <br>
-        In this level there is only one step:<br>
-        Robots MOVE actions are performed<br>
-        <br>
-        The game stands for 100 turns.<br>
-        Good luck!<br>
+        The game stands for 100 turns. Afterward, the team that painted the most squares win the
+        game!<br>
 
         <!-- Victory conditions -->
         <div class="statement-victory-conditions">
@@ -105,14 +103,14 @@
           <li><var>tpCount</var> : number of teleport portal (0 in this lelvel)</li>
           <li><var>boxCount</var> : number of boxes (0 in this level)</li>
           <li><var>robotCount</var> : number of all robots</li>
-          <li><var>robotPerPlayer</var> : number of robot per player (2 in this level)</li>
+          <li><var>robotPerPlayer</var> : number of robot per player (1 in this level)</li>
         </ul>
         <br>
         Then you receive <var>tpCount</var> lines of 3 input not used in this level<br>
         <br>
         Now start the game loop<br>
-        You receive <var>boardHeight</var> characters lines representing the map.<br>
-        E for empty square, W for wall, an integer (team id) for a painted square<br>
+        You receive <var>boardHeight</var> characters lines representing the map, starting from y=0<br>
+        E for empty square, W for a wall, an integer (team id) for a painted square.<br>
         <br>
         You will receive <var>robotCount</var> lines of 6 integers that describe robots:<br>
         <ul>

@@ -1,9 +1,11 @@
 package com.codingame.game;
 
+import static com.codingame.game.Constants.BOX;
 import static com.codingame.game.map.MapElement.TEAM1;
 import static com.codingame.game.map.MapElement.TEAM2;
 
 import com.codingame.game.action.Action;
+import com.codingame.game.action.Direction;
 import com.codingame.game.map.MapElement;
 import com.codingame.game.map.Point;
 import com.codingame.gameengine.module.entities.Sprite;
@@ -53,34 +55,69 @@ public class UnitUI extends Point {
         sprite.setY(yConvertor.apply(y));
     }
 
-    public void moveUp() {
-        sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-t.png");
+    public void forceMoveUi(Direction direction) {
+        moveUi(direction, true);
+    }
+
+    private void moveUi(Direction direction, boolean forceMove) {
+        switch (direction) {
+            case UP:
+                moveUp(forceMove);
+                break;
+            case DOWN:
+                moveDown(forceMove);
+                break;
+            case LEFT:
+                moveLeft(forceMove);
+                break;
+            case RIGHT:
+                moveRight(forceMove);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown direction");
+        }
+    }
+
+    public void moveUi(Direction direction) {
+        moveUi(direction, false);
+    }
+
+    private void moveUp(boolean forceMove) {
+        if (!unitImage.equals(BOX)) {
+            sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-t.png");
+        }
         viewer.getGraphics().commitEntityState(0, sprite);
-        if (viewer.isEmpty(x, y - 1)) {
+        if (viewer.isEmpty(x, y - 1) || forceMove) {
             setY(y - 1);
         }
     }
 
-    public void moveDown() {
-        sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-b.png");
+    private void moveDown(boolean forceMove) {
+        if (!unitImage.equals(BOX)) {
+            sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-b.png");
+        }
         viewer.getGraphics().commitEntityState(0, sprite);
-        if (viewer.isEmpty(x, y + 1)) {
+        if (viewer.isEmpty(x, y + 1) || forceMove) {
             setY(y + 1);
         }
     }
 
-    public void moveRight() {
-        sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-r.png");
+    private void moveRight(boolean forceMove) {
+        if (!unitImage.equals(BOX)) {
+            sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-r.png");
+        }
         viewer.getGraphics().commitEntityState(0, sprite);
-        if (viewer.isEmpty(x + 1, y)) {
+        if (viewer.isEmpty(x + 1, y) || forceMove) {
             setX(x + 1);
         }
     }
 
-    public void moveLeft() {
-        sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-l.png");
+    private void moveLeft(boolean forceMove) {
+        if (!unitImage.equals(BOX)) {
+            sprite.setImage(unitImage.substring(0, unitImage.lastIndexOf("-")) + "-l.png");
+        }
         viewer.getGraphics().commitEntityState(0, sprite);
-        if (viewer.isEmpty(x - 1, y)) {
+        if (viewer.isEmpty(x - 1, y) || forceMove) {
             setX(x - 1);
         }
     }

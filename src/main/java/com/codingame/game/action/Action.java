@@ -1,5 +1,6 @@
 package com.codingame.game.action;
 
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,6 @@ public class Action {
 
     private final MoveAction moveAction;
     private Direction direction;
-    private String message;
 
     public static Action fromInput(String input) throws InvalidAction {
         ActionBuilder builder = new ActionBuilder();
@@ -26,10 +26,10 @@ public class Action {
         MoveAction move = MoveAction.fromString(args[0])
                 .orElseThrow(() -> new InvalidAction("Unknown action : " + args[0]));
         builder.moveAction(move);
-        builder.message(input);
 
         switch (move) {
             case WAIT:
+            case TELEPORT:
                 // empty
                 break;
             case MOVE:
@@ -37,29 +37,25 @@ public class Action {
             case PULL:
                 buildMove(builder, args);
                 break;
-            case TAKE:
-                buildTake(builder, args);
-                break;
             default:
                 throw new InvalidAction("Unknown move : " + move);
         }
         return builder.build();
     }
 
-    private static void buildTake(ActionBuilder builder, String[] args) throws InvalidAction {
-         if (args.length > 1) {
-            builder.message(args[1]);
-        }
-    }
-
     private static void buildMove(ActionBuilder builder, String[] args) throws InvalidAction {
         if (args.length == 1) {
             throw new InvalidAction("Missing instruction");
-        } else if (args.length > 2) {
-            builder.message(args[2]);
         }
         builder.direction(Direction.fromString(args[1])
                 .orElseThrow(() -> new InvalidAction("Unknown direction : " + args[1])));
     }
 
+    public String instruction() {
+        String instruction = moveAction.toString();
+        if (Objects.nonNull(direction)) {
+            instruction += ' ' + direction.toString();
+        }
+        return instruction;
+    }
 }

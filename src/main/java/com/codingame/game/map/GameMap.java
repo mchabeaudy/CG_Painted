@@ -81,18 +81,21 @@ public class GameMap {
     }
 
     public void buildMap(Random random, boolean withElements) {
-        boolean withTp = withElements && random.nextInt(4) < 3;
-        if (withTp) {
+        boolean addElements = withElements && random.nextInt(4) < 3;
+        if (addElements) {
             boolean crossTp = random.nextBoolean();
-            teleports.add(new Teleport(1, 1, 1));
-            teleports.add(new Teleport(1, height - 2, 2));
-            if (crossTp) {
-                teleports.add(new Teleport(width - 2, 1, 2));
-                teleports.add(new Teleport(width - 2, height - 2, 1));
-            } else {
-                teleports.add(new Teleport(width - 2, 1, 1));
-                teleports.add(new Teleport(width - 2, height - 2, 2));
-            }
+            Teleport tp1a = new Teleport(1, 1, 1);
+            Teleport tp2a = new Teleport(1, height - 2, 2);
+            teleports.add(tp1a);
+            teleports.add(tp2a);
+            Teleport tp1b = crossTp ? new Teleport(width - 2, height - 2, 1) : new Teleport(width - 2, 1, 1);
+            Teleport tp2b = crossTp ? new Teleport(width - 2, 1, 2) : new Teleport(width - 2, height - 2, 2);
+            teleports.add(tp1b);
+            teleports.add(tp2b);
+            tp1a.setPaired(tp1b);
+            tp1b.setPaired(tp1a);
+            tp2a.setPaired(tp2b);
+            tp2b.setPaired(tp2a);
             boolean withBoxes = random.nextInt(4) < 3;
             if (withBoxes) {
                 boxes.add(new Box(2, 2));
@@ -105,8 +108,8 @@ public class GameMap {
         range(0, height).forEach(y -> range(0, width).forEach(x -> elements[y][x] = NEUTRAL));
 
         // up left
-        Block block00 = Corner.of(withTp, random, 0, 0);
-        Block block01 = Block01.of(withTp, random, 0, 4);
+        Block block00 = Corner.of(addElements, random, 0, 0);
+        Block block01 = Block01.of(addElements, random, 0, 4);
         Block block02 = StartBlock.of(random, 0, 7);
         Block block10 = Block10.of(random, 4, 0);
         Block block11 = Block11.of(random, 4, 3);
@@ -127,7 +130,7 @@ public class GameMap {
         Block block52 = block02.verticalFlip(width);
 
         // down left
-        Block block03 = Block01.of(withTp, random, 0, 4).horizontalFlip(height);
+        Block block03 = Block01.of(addElements, random, 0, 4).horizontalFlip(height);
         Block block04 = block00.horizontalFlip(height);
         Block block13 = Block11.of(random, 4, 3).horizontalFlip(height);
         Block block14 = Block10.of(random, 4, 0).horizontalFlip(height);

@@ -9,7 +9,7 @@ public enum MoveAction {
     WAIT,
     PUSH,
     PULL,
-    TAKE;
+    TELEPORT;
 
     public static Optional<MoveAction> fromString(String move)
     {

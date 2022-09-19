@@ -8,6 +8,7 @@ import lombok.Setter;
 public class Teleport extends Point implements Displayable {
 
     private int groupId;
+    private Teleport paired;
 
     public Teleport(int x, int y, int groupId) {
         super(x, y);

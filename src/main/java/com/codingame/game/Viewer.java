@@ -15,7 +15,10 @@ import static com.codingame.game.Constants.TELEPORT2;
 import static com.codingame.game.map.MapElement.WALL;
 import static java.util.stream.IntStream.range;
 
+import com.codingame.game.map.Box;
+import com.codingame.game.map.Point;
 import com.codingame.game.map.Robot;
+import com.codingame.game.map.Teleport;
 import com.codingame.game.map.background.BackgroundProperty;
 import com.codingame.game.map.background.PlayerProperties;
 import com.codingame.gameengine.core.MultiplayerGameManager;
@@ -23,6 +26,7 @@ import com.codingame.gameengine.module.entities.BitmapText;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.TextBasedEntity.TextAlign;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -62,11 +66,11 @@ public class Viewer {
 
         tiles = new TileUI[height][width];
         xConvertor = x -> startX + x * tileWidth + tileWidth / 15;
-        yConvertor = y -> gap + (height - 1 - y) * tileWidth + tileWidth / 15;
+        yConvertor = y -> gap + y * tileWidth + tileWidth / 15;
         range(0, height).forEach(y -> {
             int yG = height - y - 1;
             range(0, width).forEach(x ->
-                    tiles[y][x] = new TileUI(startX + x * tileWidth,
+                    tiles[height - 1 - y][x] = new TileUI(startX + x * tileWidth,
                             gap + yG * tileWidth, this,
                             board.getGameMap().getElements()[y][x])
             );
@@ -76,7 +80,7 @@ public class Viewer {
                 .forEach(tp -> new UnitUI(this, tp.getGroupId() == 1 ? TELEPORT1 : TELEPORT2, tp.getX(),
                         tp.getY()));
         board.getGameMap().getBoxes()
-                .forEach(box -> new UnitUI(this, BOX, box.getX(), box.getY()));
+                .forEach(box -> box.setUnitUI(new UnitUI(this, BOX, box.getX(), box.getY())));
 
         switch (leagueLevel) {
             case 1:
@@ -157,7 +161,6 @@ public class Viewer {
 
         }
 
-
         score1 = graphics.createBitmapText()
                 .setText("0")
                 .setFont("americanCaptain")
@@ -210,21 +213,15 @@ public class Viewer {
     }
 
 
-    private void addBox(int startX, int fontSize, int x, int y) {
-        getGraphics().createSprite()
-                .setImage("box.png")
-                .setBaseWidth(getTileWidth())
-                .setBaseHeight(getTileWidth())
-                .setX(startX + x * tileWidth)
-                .setY(tileWidth / 2 + y * tileWidth - fontSize / 2);
-    }
-
-
     public void paint(List<Robot> robots) {
         robots.stream().map(Robot::getUi)
                 .forEach(u -> tiles[u.getY()][u.getX()].setElement(u.getMapElement()));
     }
 
+
+    public boolean isEmpty(Point point) {
+        return isEmpty(point.getX(), point.getY());
+    }
 
     public boolean isEmpty(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {
@@ -233,7 +230,7 @@ public class Viewer {
         if (board.getGameMap().getElements()[y][x] == WALL) {
             return false;
         }
-        if (getBoard().getGameMap().getBoxes().stream().anyMatch(b -> b.hasSameCoordinates(x, y))) {
+        if (getBoard().getGameMap().getBoxes().stream().anyMatch(b -> b.getUnitUI().hasSameCoordinates(x, y))) {
             return false;
         }
         if (robots.stream().anyMatch(u -> u.getUi().hasSameCoordinates(x, y))) {
@@ -246,4 +243,107 @@ public class Viewer {
         this.score1.setText(String.valueOf(score1));
         this.score2.setText(String.valueOf(score2));
     }
+
+    public Teleport getTp(Point p) {
+        return board.getGameMap().getTeleports().stream()
+                .filter(p::hasSameCoordinates)
+                .findAny()
+                .orElse(null);
+    }
+
+    public void resolveAction(Robot robot) {
+        switch (robot.getAction().getMoveAction()) {
+            case MOVE:
+                robot.move();
+                break;
+            case PULL:
+                resolvePull(robot);
+                break;
+            case PUSH:
+                resolvePush(robot);
+                break;
+            case TELEPORT:
+                Teleport tp = getTp(robot.getUi());
+                if (Objects.nonNull(tp) && isEmpty(tp.getPaired())) {
+                    robot.getUi().tpTo(tp.getPaired());
+                }
+                break;
+            case WAIT:
+                // EMPTY
+                break;
+            default:
+                throw new IllegalStateException("Unknown action");
+        }
+    }
+
+    private void resolvePush(Robot robot) {
+        Point robotUi = new Point(robot.getUi());
+        Point boxPoint;
+        Point behindBox;
+        switch (robot.getAction().getDirection()) {
+            case UP:
+                boxPoint = new Point(robotUi.getX(), robotUi.getY() - 1);
+                behindBox = new Point(robotUi.getX(), robotUi.getY() - 2);
+                break;
+            case DOWN:
+                boxPoint = new Point(robotUi.getX(), robotUi.getY() + 1);
+                behindBox = new Point(robotUi.getX(), robotUi.getY() + 2);
+                break;
+            case LEFT:
+                boxPoint = new Point(robotUi.getX() - 1, robotUi.getY());
+                behindBox = new Point(robotUi.getX() - 2, robotUi.getY());
+                break;
+            case RIGHT:
+                boxPoint = new Point(robotUi.getX() + 1, robotUi.getY());
+                behindBox = new Point(robotUi.getX() + 2, robotUi.getY());
+                break;
+            default:
+                throw new IllegalArgumentException("robot has unknown direction");
+        }
+        Box box = getBoard().getGameMap().getBoxes().stream()
+                .filter(boxPoint::hasSameCoordinates)
+                .findAny()
+                .orElse(null);
+        if (Objects.nonNull(box) && isEmpty(behindBox)) {
+            box.move(robot.getAction().getDirection());
+            box.getUnitUI().moveUi(robot.getAction().getDirection());
+            robot.move();
+        }
+    }
+
+    private void resolvePull(Robot robot) {
+        Point robotUi = new Point(robot.getUi());
+        Point boxPoint;
+        Point behindRobot;
+        switch (robot.getAction().getDirection()) {
+            case UP:
+                boxPoint = new Point(robotUi.getX(), robotUi.getY() + 1);
+                behindRobot = new Point(robotUi.getX(), robotUi.getY() - 1);
+                break;
+            case DOWN:
+                boxPoint = new Point(robotUi.getX(), robotUi.getY() - 1);
+                behindRobot = new Point(robotUi.getX(), robotUi.getY() + 1);
+                break;
+            case LEFT:
+                boxPoint = new Point(robotUi.getX() + 1, robotUi.getY());
+                behindRobot = new Point(robotUi.getX() - 1, robotUi.getY());
+                break;
+            case RIGHT:
+                boxPoint = new Point(robotUi.getX() - 1, robotUi.getY());
+                behindRobot = new Point(robotUi.getX() + 1, robotUi.getY());
+                break;
+            default:
+                throw new IllegalArgumentException("robot has unknown direction");
+        }
+        Box box = getBoard().getGameMap().getBoxes().stream()
+                .filter(boxPoint::hasSameCoordinates)
+                .findAny()
+                .orElse(null);
+        if (Objects.nonNull(box) && isEmpty(behindRobot)) {
+            box.move(robot.getAction().getDirection());
+            box.getUnitUI().forceMoveUi(robot.getAction().getDirection());
+            robot.move();
+        }
+    }
 }
+

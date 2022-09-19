@@ -1,4 +1,4 @@
-import static java.util.stream.IntStream.range;
+Boss.javaimport static java.util.stream.IntStream.range;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -16,53 +16,51 @@
 
     <div>
       <div class="statement-rules-content">
-        During this painting battle you will have to give
-        <const>INSTRUCTION</const>
-        to your robot.<br>
-        <ol>
+        During this painting battle you will have to give <const>INSTRUCTION</const> to your
+        robot.<br>
+        <ul>
           <li>MOVE : Your robot will move</li>
           <li>WAIT : Your robot will not do anything</li>
-          <li>PUSH : Your robot try to push a box</li>
-          <li>PULL : Your robot try to pull a box</li>
+          <li>PUSH : Your robot will push a box</li>
+          <li>PULL : Your robot will pull a box</li>
           <li>TELEPORT : Your robot will try to use a teleport</li>
-        </ol>
+        </ul>
         <br>
+        The board is made with a square grid where (0,0) coordinate is UPPER LEFT square.<br>
         <const>MOVE</const>, <const>PUSH</const> and <const>PULL</const> instructions must be
         followed by a <const>DIRECTION</const>.
-        <ol>
-          <li>RIGHT</li>
-          <li>LEFT</li>
-          <li>UP</li>
-          <li>DOWN</li>
-        </ol>
+        <ul>
+          <li>RIGHT - increasing x coordinate</li>
+          <li>LEFT - decreasing x coordinate</li>
+          <li>UP - decreasing y coordinate</li>
+          <li>DOWN - increasing y coordinate</li>
+        </ul>
         Be careful you cannot PUSH or PULL boxes if you don't have enough space to do it<br>
         <br>
         <const>TELEPORT</const> can be used when your unit stands on a teleport.<br>
         If the associated teleport is empty, then your unit will teleport at this point<br>
         <br>
-        When your robot moves it automatically paints the square on which it arrives.<br>
+        If there is no obstacle on your destination your robot will move to it and will
+        automatically paint the square on which it arrives.<br>
         If the square was already painted by the other team, your robot will paint over it<br>
-        <br>
-        In case of conflict (2 or more robots that want to go on the same square):<br>
-        The robot with the biggest initiative will move on the square while other robots will remain
-        on their
-        space.<br>
         <br>
         Now there are walls on the map. Robots cannot paint or walk on walls.<br>
         At the beginning of each round a new random map is generated so walls are not in the same
         position.<br>
         <br>
-        <b>Chronology</b><br>
-        <br>
+        What happen in case of conflict? (2 or more robots that want to take action leading into incompatible position)<br>
+        Robots have an initiative attribute that changes each turn<br>
+        Robots perform their action sequentially starting with the robot with the lowest initiative<br>
+        Exemple: <br>
         <ul>
-          <li>TELEPORT actions are performed</li>
-          <li>PUSH actions are performed</li>
-          <li>PULL actions are performed</li>
-          <li>MOVE actions are performed</li>
+          <li>Robot 1 : x=5, y=5, init=1, action=MOVE RIGHT</li>
+          <li>Robot 2 : x=7, y=5, init=2, action=MOVE LEFT</li>
         </ul>
+        Robot 1 will move first on (6,5) because it has a lower initiative.<br>
+        Then Robot 2 will not do anything as square (6,5) is not empty.<br>
         <br>
-        The game stands for 100 turns.<br>
-        Good luck!<br>
+        The game stands for 100 turns. Afterward, the team that painted the most squares win the
+        game!<br>
 
         <!-- Victory conditions -->
         <div class="statement-victory-conditions">
@@ -125,8 +123,8 @@
         </ul>
         <br>
         Now start the game loop<br>
-        You receive <var>boardHeight</var> characters lines representing the map.<br>
-        E for empty square, W for wall, an integer (team id) for a painted square<br>
+        You receive <var>boardHeight</var> characters lines representing the map, starting from y=0.<br>
+        E for empty square, W for wall, an integer (team id) for a painted square.<br>
         <br>
         You will receive <var>robotCount</var> lines of 6 integers that describe robots:<br>
         <ul>

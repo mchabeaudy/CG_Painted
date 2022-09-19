@@ -16,7 +16,7 @@ public final class Constants {
     public static final String TELEPORT2 = "tp-02.png";
     public static final String BOX = "box.png";
 
-    public static final int NAME_FONT_SIZE = 30;
+    public static final int NAME_FONT_SIZE = 20;
     public static final int MAP_WIDTH_LEVEL1 = 15;
     public static final int MAP_HEIGHT_LEVEL1 = 15;
     public static final int MAP_WIDTH_LEVEL234 = 24;
@@ -24,7 +24,7 @@ public final class Constants {
     public static final int AVATAR_BACKGROUND = 0x737373;
 
 
-    public static final BackgroundProperty BG_1 = BackgroundProperty.of(
+    public static final BackgroundProperty BG_1 = BackgroundProperty.of (
             Square.of(Point.of(186, 1908), Point.of(916, 2416)),
             Square.of(Point.of(4420, 1908), Point.of(5153, 2416)),
             new ArrayList<>(),
@@ -54,30 +54,30 @@ public final class Constants {
     static {
         BG_1.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(293, 1123), Point.of(800, 1631)),
-                Square.of(Point.of(10, 716), Point.of(1100, 906))));
+                Square.of(Point.of(10, 736), Point.of(1100, 906))));
         BG_1.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(4544, 1123), Point.of(5051, 1631)),
-                Square.of(Point.of(4250, 716), Point.of(5334, 906))));
+                Square.of(Point.of(4250, 736), Point.of(5334, 906))));
 
         BG_2.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(132, 898), Point.of(440, 1205)),
-                Square.of(Point.of(10, 578), Point.of(564, 719))));
+                Square.of(Point.of(10, 593), Point.of(564, 719))));
         BG_2.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(3558, 898), Point.of(3866, 1205)),
-                Square.of(Point.of(3440, 578), Point.of(4000, 719))));
+                Square.of(Point.of(3440, 593), Point.of(4000, 719))));
 
         BG_3.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(166, 713), Point.of(403, 950)),
-                Square.of(Point.of(10, 464), Point.of(564, 602))));
+                Square.of(Point.of(10, 479), Point.of(564, 602))));
         BG_3.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(166, 1407), Point.of(403, 1644)),
-                Square.of(Point.of(10, 1801), Point.of(564, 1943))));
+                Square.of(Point.of(10, 1816), Point.of(564, 1943))));
         BG_3.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(3596, 713), Point.of(3833, 950)),
-                Square.of(Point.of(3439, 464), Point.of(4000, 602))));
+                Square.of(Point.of(3439, 479), Point.of(4000, 602))));
         BG_3.getPlayerProperties().add(PlayerProperties.of(
                 Square.of(Point.of(3596, 1407), Point.of(3833, 1644)),
-                Square.of(Point.of(3439, 1801), Point.of(4000, 1943))));
+                Square.of(Point.of(3439, 1816), Point.of(4000, 1943))));
     }
 
     private Constants() {
