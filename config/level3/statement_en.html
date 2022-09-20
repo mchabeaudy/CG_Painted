@@ -18,17 +18,24 @@
       <div class="statement-rules-content">
         During this painting battle you will have to give <const>INSTRUCTION</const> to your
         robot.<br>
+        You have 2 robots under your control.<br>
         <ul>
           <li>MOVE : Your robot will move</li>
           <li>WAIT : Your robot will not do anything</li>
-          <li>PUSH : Your robot will push a box</li>
-          <li>PULL : Your robot will pull a box</li>
-          <li>TELEPORT : Your robot will try to use a teleport</li>
         </ul>
+        <div class="statement-new-league-rule">
+          <ul>
+            <li>PUSH : Your robot will push a box</li>
+            <li>PULL : Your robot will pull a box</li>
+            <li>TELEPORT : Your robot will try to use a teleport</li>
+          </ul>
+        </div>
         <br>
         The board is made with a square grid where (0,0) coordinate is UPPER LEFT square.<br>
-        <const>MOVE</const>, <const>PUSH</const> and <const>PULL</const> instructions must be
-        followed by a <const>DIRECTION</const>.
+        <div class="statement-new-league-rule">
+          <const>MOVE</const>, <const>PUSH</const> and <const>PULL</const> instructions must be
+          followed by a <const>DIRECTION</const>.
+        </div>
         <ul>
           <li>RIGHT - increasing x coordinate</li>
           <li>LEFT - decreasing x coordinate</li>
@@ -58,6 +65,8 @@
         </ul>
         Robot 1 will move first on (6,5) because it has a lower initiative.<br>
         Then Robot 2 will not do anything as square (6,5) is not empty.<br>
+        Robot initiative increases by 1 each turn until it reaches maximum number of robots, then it
+        comes back to 1.<br>
         <br>
         The game stands for 100 turns. Afterward, the team that painted the most squares win the
         game!<br>
@@ -114,13 +123,15 @@
           <li><var>robotPerPlayer</var> : number of robot per player (2 in this level)</li>
         </ul>
         <br>
-        Then you receive <var>tpCount</var> lines of 3 integers<br>
-        <ul>
-          <li><var>tpX</var> : x coordinate</li>
-          <li><var>tpY</var> : y coordinate</li>
-          <li><var>tpGroupId</var> : id of the group (you unit will teleport on the other
-            coordinates with the same group id)</li>
-        </ul>
+        <div class="statement-new-league-rule">
+        Then you receive <var>tpCount</var> lines of 3 integers:<br>
+          <ul>
+            <li><var>tpX</var> : x coordinate</li>
+            <li><var>tpY</var> : y coordinate</li>
+            <li><var>tpGroupId</var> : id of the group (you unit will teleport on the other
+              coordinates with the same group id)</li>
+          </ul>
+        </div>
         <br>
         Now start the game loop<br>
         You receive <var>boardHeight</var> characters lines representing the map, starting from y=0.<br>
@@ -137,12 +148,14 @@
           <li><var>robotCount</var> : number of all robots</li>
           <li><var>robotPerPlayer</var> : number of robot per player (2 in this level)</li>
         </ul>
-        You will then receive <var>boxCount</var> lines of 2 integers that describe boxes
-        position:<br>
-        <ul>
-          <li><var>boxX</var> : x box position</li>
-          <li><var>boxY</var> : y box position</li>
-        </ul>
+        <div class="statement-new-league-rule">
+          You will then receive <var>boxCount</var> lines of 2 integers that describe boxes
+          position:<br>
+          <ul>
+            <li><var>boxX</var> : x box position</li>
+            <li><var>boxY</var> : y box position</li>
+          </ul>
+        </div>
       </div>
 
     </div>

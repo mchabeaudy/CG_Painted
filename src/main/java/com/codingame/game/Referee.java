@@ -15,6 +15,7 @@ import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.tooltip.TooltipModule;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -31,6 +32,8 @@ public class Referee extends AbstractReferee {
     private GraphicEntityModule graphicEntityModule;
     @Inject
     private EndScreenModule endScreenModule;
+    @Inject
+    private TooltipModule tooltipModule;
 
     private final List<Robot> robots = new ArrayList<>();
     private Viewer viewer;
@@ -39,11 +42,8 @@ public class Referee extends AbstractReferee {
     private final Random random = new Random();
     private static final int MAX_TURN = 100;
 
-    private int team1Score = 0;
-    private int team2Score = 0;
 
     private int playerCount;
-    private int turn;
 
 
     @Override
@@ -131,7 +131,6 @@ public class Referee extends AbstractReferee {
 
     @Override
     public void gameTurn(int turn) {
-        this.turn = turn;
         robots.forEach(r -> r.nextInit(robots.size()));
         if (turn == 1) {
             sendFirstInputs();
@@ -196,8 +195,6 @@ public class Referee extends AbstractReferee {
                 }
             }
         }
-        team1Score = score1;
-        team2Score = score2;
         viewer.updateScores(score1, score2);
     }
 
@@ -205,6 +202,8 @@ public class Referee extends AbstractReferee {
         robots.stream()
                 .sorted(Comparator.comparingInt(Robot::getInit))
                 .forEach(viewer::resolveAction);
+        robots.forEach(r -> tooltipModule.setTooltipText(r.getUi().getSprite(),
+                "x:" + r.getUi().getX() + " y:" + r.getUi().getY()));
     }
 
 

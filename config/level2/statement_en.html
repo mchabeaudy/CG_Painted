@@ -17,7 +17,10 @@
     <div>
       <div class="statement-rules-content">
         During this painting battle you will have to give <const>INSTRUCTION</const> to your
-        robot.<br>
+        robots.<br>
+        <div class="statement-new-league-rule">
+          You have 2 robots under your control.<br>
+        </div>
         <ul>
           <li>MOVE : Your robot will move</li>
           <li>WAIT : Your robot will not do anything</li>
@@ -36,9 +39,11 @@
         automatically paint the square on which it arrives.<br>
         If the square was already painted by the other team, your robot will paint over it<br>
         <br>
-        Now there are walls on the map. Robots cannot paint or walk on walls.<br>
-        At the beginning of each round a new random map is generated so walls are not in the same
-        position.<br>
+        <div class="statement-new-league-rule">
+          Now there are walls on the map. Robots cannot paint or walk on walls.<br>
+          At the beginning of each round a new random map is generated so walls are not in the same
+          position.<br>
+        </div>
         <br>
         What happen in case of conflict? (2 or more robots that want to take action leading into incompatible position)<br>
         Robots have an initiative attribute that changes each turn<br>
@@ -50,6 +55,8 @@
         </ul>
         Robot 1 will move first on (6,5) because it has a lower initiative.<br>
         Then Robot 2 will not do anything as square (6,5) is not empty.<br>
+        Robot initiative increases by 1 each turn until it reaches maximum number of robots, then it
+        comes back to 1.<br>
         <br>
         The game stands for 100 turns. Afterward, the team that painted the most squares win the
         game!<br>
@@ -106,11 +113,12 @@
           <li><var>robotPerPlayer</var> : number of robot per player (1 in this level)</li>
         </ul>
         <br>
-        Then you receive <var>tpCount</var> lines of 3 input not used in this level<br>
+        Then you receive <var>tpCount</var> lines of 3 integers : <em>ignore for this league</em>.<br>
         <br>
         Now start the game loop<br>
         You receive <var>boardHeight</var> characters lines representing the map, starting from y=0<br>
-        E for empty square, W for a wall, an integer (team id) for a painted square.<br>
+        E for empty square, <div class="statement-new-league-rule">W for a wall,</div>an integer
+        (team id) for a painted square.<br>
         <br>
         You will receive <var>robotCount</var> lines of 6 integers that describe robots:<br>
         <ul>
@@ -123,14 +131,8 @@
           <li><var>robotCount</var> : number of all robots</li>
           <li><var>robotPerPlayer</var> : number of robot per player (2 in this level)</li>
         </ul>
-        You will then receive <var>boxCount</var> lines of 2 integers that describe boxes
-        position:<br>
-        <ul>
-          <li><var>boxX</var> : x box position</li>
-          <li><var>boxY</var> : y box position</li>
-        </ul>
+        You will then receive <var>boxCount</var> lines of 2 integers : <em>ignore for this league</em>.<br>
       </div>
-
     </div>
     <div class="blk">
       <div class="title">Output for a turn</div>
