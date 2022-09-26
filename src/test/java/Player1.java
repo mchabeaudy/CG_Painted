@@ -103,7 +103,7 @@ public class Player1 {
             for (Stack<Square> p : paths) {
                 Square last = p.peek();
                 List<Square> newSquares = squares.stream()
-                        .filter(s -> last.dist2(s) == 1 && !covered.contains(s) && s.isDifferentFrom('W') && others
+                        .filter(s -> last.dist2(s) == 1 && !covered.contains(s) && s.isDifferentFrom('x') && others
                                 .stream().noneMatch(s::hasSameCoordinate))
                         .collect(Collectors.toList());
                 covered.addAll(newSquares);

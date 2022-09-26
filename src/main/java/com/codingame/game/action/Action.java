@@ -17,6 +17,9 @@ public class Action {
 
     public static Action fromInput(String input) throws InvalidAction {
         ActionBuilder builder = new ActionBuilder();
+        if (Objects.isNull(input) || input.length() == 0) {
+            throw new InvalidAction("Missing instruction");
+        }
         String[] args = input.split(" ");
 
         if (args.length == 0) {

@@ -108,7 +108,7 @@
         <br>
         Now start the game loop<br>
         You receive <var>boardHeight</var> characters lines representing the map, starting from y=0.<br>
-        E for empty square, an integer (team id) for a painted square.<br>
+        . for empty square, an integer (team id) for a painted square.<br>
         <br>
         You will receive <var>robotCount</var> lines of 6 integers that describe robots:<br>
         <ul>
@@ -128,7 +128,11 @@
     <div class="blk">
       <div class="title">Output for a turn</div>
       <div class="text"><var>robotPerPlayer</var> lines (one line in this level) containing robot
-        instruction
+        instruction for each robot: <br>
+        <ul>
+          <li>MOVE <var>direction</var></li>
+          <li>WAIT</li>
+        </ul>
       </div>
     </div>
 
