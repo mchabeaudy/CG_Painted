@@ -19,6 +19,10 @@
         During this painting battle you will have to give <const>INSTRUCTION</const> to your
         robot.<br>
         You have 2 robots under your control.<br>
+        Boxes and/or teleport portals <strong>may</strong> now be part of map.<br>
+        Teleports allow you to teleport your robot to another teleport portal<br>
+        Robots can be push or pull boxes, blocking access to other robots, and also
+        <strong>blocking teleport portal</strong> when it is placed over it<br>
         <div class="statement-new-league-rule">
           You play now with a partner, controlling also 2 robots.<br>
         </div>
@@ -129,8 +133,13 @@
         </ul>
         <br>
         Now start the game loop<br>
-        You receive <var>boardHeight</var> characters lines representing the map, starting from y=0.<br>
-        . for empty square, x for wall, an integer (team id) for a painted square.<br>
+        You receive <var>boardHeight</var> characters lines representing the map, starting from y=0,
+        characters can be:<br>
+        <ul>
+          <li>. for empty square</li>
+          <li>x for a wall</li>
+          <li>1 or 2 for a painted square (team id)</li>
+        </ul>
         <br>
         You will receive <var>robotCount</var> lines of 6 integers that describe robots:<br>
         <ul>

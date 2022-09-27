@@ -107,8 +107,12 @@
         Then you receive <var>tpCount</var> lines of 3 integers : <em>ignore for this league</em>.<br>
         <br>
         Now start the game loop<br>
-        You receive <var>boardHeight</var> characters lines representing the map, starting from y=0.<br>
-        . for empty square, an integer (team id) for a painted square.<br>
+        You receive <var>boardHeight</var> characters lines representing the map, starting from y=0,
+        characters can be:<br>
+        <ul>
+          <li>. for empty square</li>
+          <li>1 or 2 for a painted square (team id)</li>
+        </ul>
         <br>
         You will receive <var>robotCount</var> lines of 6 integers that describe robots:<br>
         <ul>
