@@ -1,19 +1,26 @@
 package com.codingame.game.action;
 
+import com.codingame.game.map.Point;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Action {
 
+    private static final String POSITIVE_INTEGER_REGEX = "^\\d+$";
+
     private final MoveAction moveAction;
     private Direction direction;
+    private Point target;
 
     public static Action fromInput(String input) throws InvalidAction {
         ActionBuilder builder = new ActionBuilder();
@@ -36,9 +43,11 @@ public class Action {
                 // empty
                 break;
             case MOVE:
+                buildMove(builder, args);
+                break;
             case PUSH:
             case PULL:
-                buildMove(builder, args);
+                buildPushPull(builder, args);
                 break;
             default:
                 throw new InvalidAction("Unknown move : " + move);
@@ -47,6 +56,26 @@ public class Action {
     }
 
     private static void buildMove(ActionBuilder builder, String[] args) throws InvalidAction {
+        if (args.length < 2) {
+            throw new InvalidAction("Missing instruction");
+        }
+        Optional<Direction> direction = Direction.fromString(args[1]);
+        if (direction.isPresent()) {
+            builder.direction(direction.get());
+            builder.target(null);
+        } else {
+            if (args.length < 3) {
+                throw new InvalidAction("Missing instruction");
+            }
+            if (!args[1].matches(POSITIVE_INTEGER_REGEX) || !args[2].matches(POSITIVE_INTEGER_REGEX)) {
+                throw new InvalidAction("Error parsing coordinate. Make sure 2nd and 3rd argument are integers");
+            }
+            builder.target(Point.of(Integer.parseInt(args[1]), Integer.parseInt(args[2])));
+            builder.direction(null);
+        }
+    }
+
+    private static void buildPushPull(ActionBuilder builder, String[] args) throws InvalidAction {
         if (args.length == 1) {
             throw new InvalidAction("Missing instruction");
         }

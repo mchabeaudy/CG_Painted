@@ -38,6 +38,9 @@
         If there is no obstacle on your destination your robot will move to it and will
         automatically paint the square on which it arrives.<br>
         If the square was already painted by the other team, your robot will paint over it<br>
+        To simplify the problem you can also type <const>MOVE x y</const>. If the destination is
+        empty and a path to the destination exists then the robot will try to move to the
+        destination using a path as short as possible.<br>
         <br>
         <div class="statement-new-league-rule">
           Now there are walls on the map. Robots cannot paint or walk on walls.<br>
@@ -149,8 +152,9 @@
       <div class="text"><var>robotPerPlayer</var> lines (two line in this level) containing robot
         instruction for each robot: <br>
         <ul>
-          <li>MOVE <var>direction</var></li>
           <li>WAIT</li>
+          <li>MOVE <var>direction</var></li>
+          <li>MOVE <var>x</var> <var>y</var></li>
         </ul>
       </div>
     </div>

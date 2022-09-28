@@ -24,6 +24,9 @@
           Teleports allow you to teleport your robot to another teleport portal<br>
           Robots can be push or pull boxes, blocking access to other robots, and also
           <strong>blocking teleport portal</strong> when it is placed over it<br>
+          To simplify the problem you can also type <const>MOVE x y</const>. If the destination is
+          empty and a path to the destination exists then the robot will try to move to the
+          destination using a path as short as possible.<br>
         </div>
         <ul>
           <li>MOVE : Your robot will move</li>
@@ -175,8 +178,9 @@
       <div class="text"><var>robotPerPlayer</var> lines (two line in this level) containing robot
         instruction for each robot: <br>
         <ul>
-          <li>MOVE <var>direction</var></li>
           <li>WAIT</li>
+          <li>MOVE <var>direction</var></li>
+          <li>MOVE <var>x</var> <var>y</var></li>
         </ul>
         <div class="statement-new-league-rule">
           <ul>

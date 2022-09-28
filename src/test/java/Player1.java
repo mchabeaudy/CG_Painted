@@ -1,6 +1,7 @@
 import static java.util.stream.IntStream.range;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -68,24 +69,33 @@ public class Player1 {
 
                 Robot robot = myRobots.get(i);
 
-                Square nextEmpty =
-                        toNextEmpty(robot, robots.stream().filter(r -> r.getRobotId() != robot.getRobotId())
-                                .collect(Collectors.toList()));
-                if (nextEmpty == null) {
-                    System.out.println("WAIT");
-                } else if (nextEmpty.x > robot.x) {
-                    System.out.println("MOVE RIGHT");
-                } else if (nextEmpty.x < robot.x) {
-                    System.out.println("MOVE LEFT");
-                } else if (nextEmpty.y > robot.y) {
-                    System.out.println("MOVE DOWN");
-                } else {
-                    System.out.println("MOVE UP");
-                }
-
+//                Square nextEmpty =
+//                        toNextEmpty(robot, robots.stream().filter(r -> r.getRobotId() != robot.getRobotId())
+//                                .collect(Collectors.toList()));
+//                if (nextEmpty == null) {
+//                    System.out.println("WAIT");
+//                } else if (nextEmpty.x > robot.x) {
+//                    System.out.println("MOVE RIGHT");
+//                } else if (nextEmpty.x < robot.x) {
+//                    System.out.println("MOVE LEFT");
+//                } else if (nextEmpty.y > robot.y) {
+//                    System.out.println("MOVE DOWN");
+//                } else {
+//                    System.out.println("MOVE UP");
+//                }
+                Square next = toNextEmpty2(robot, teamId,robots.stream().filter(r -> r.getRobotId() != robot.getRobotId())
+                                .collect(Collectors.toList()), boxes);
+                System.out.println("MOVE " + next.x + ' ' + next.y);
 
             }
         }
+    }
+
+    static Square toNextEmpty2(Robot robot, int teamId, List<Robot> others, List<Box> boxes) {
+        return squares.stream().filter(s -> s.isDifferentFrom('x') && s.isDifferentFrom(teamId) && others.stream()
+                        .noneMatch(s::hasSameCoordinate) && boxes.stream().noneMatch(s::hasSameCoordinate))
+                .min(Comparator.comparingInt(robot::dist2))
+                .get();
     }
 
     static Square toNextEmpty(Robot robot, List<Robot> others) {

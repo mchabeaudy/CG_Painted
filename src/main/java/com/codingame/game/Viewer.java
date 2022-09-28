@@ -15,6 +15,7 @@ import static com.codingame.game.Constants.TELEPORT2;
 import static com.codingame.game.map.MapElement.WALL;
 import static java.util.stream.IntStream.range;
 
+import com.codingame.game.action.Direction;
 import com.codingame.game.map.Box;
 import com.codingame.game.map.Point;
 import com.codingame.game.map.Robot;
@@ -25,8 +26,14 @@ import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.BitmapText;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.TextBasedEntity.TextAlign;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Stack;
 import java.util.function.UnaryOperator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +52,7 @@ public class Viewer {
     private int height;
     private int tileWidth;
     private TileUI[][] tiles;
+    private List<TileUI> tilesList;
     private List<Robot> robots;
     private UnaryOperator<Integer> xConvertor;
     private UnaryOperator<Integer> yConvertor;
@@ -65,14 +73,18 @@ public class Viewer {
         int startX = viewerWidth / 2 - tileWidth * width / 2;
 
         tiles = new TileUI[height][width];
+        tilesList = new ArrayList<>(height * width);
         xConvertor = x -> startX + x * tileWidth + tileWidth / 15;
         yConvertor = y -> gap + y * tileWidth + tileWidth / 15;
         range(0, height).forEach(y -> {
             int yG = y;
-            range(0, width).forEach(x ->
-                    tiles[y][x] = new TileUI(startX + x * tileWidth,
-                            gap + yG * tileWidth, this,
-                            board.getGameMap().getElements()[y][x])
+            range(0, width).forEach(x -> {
+                        TileUI tile = new TileUI(startX + x * tileWidth,
+                                gap + yG * tileWidth, this,
+                                board.getGameMap().getElements()[y][x]);
+                        tiles[y][x] = tile;
+                        tilesList.add(tile);
+                    }
             );
         });
 
@@ -254,7 +266,7 @@ public class Viewer {
     public void resolveAction(Robot robot) {
         switch (robot.getAction().getMoveAction()) {
             case MOVE:
-                robot.move();
+                resolveMove(robot);
                 break;
             case PULL:
                 resolvePull(robot);
@@ -274,6 +286,80 @@ public class Viewer {
             default:
                 throw new IllegalStateException("Unknown action");
         }
+    }
+
+    private void resolveMove(Robot robot) {
+        if (robot.getAction().getDirection() == null) {
+            Point target = robot.getAction().getTarget();
+            if (target.hasSameCoordinates(robot.getUi())) {
+                return;
+            }
+            Set<Point> covered = new HashSet<>();
+            Point robotPosition = new Point(robot.getUi());
+            Stack<Point> initialPath = new Stack<>();
+            initialPath.add(robotPosition);
+            List<Stack<Point>> paths = new ArrayList<>();
+            paths.add(initialPath);
+            covered.add(robotPosition);
+            while (true) {
+                int coveredSize = covered.size();
+                List<Stack<Point>> newPaths = new ArrayList<>();
+                for (Stack<Point> path : paths) {
+                    Point last = path.peek();
+                    List<Point> newPoints = new ArrayList<>();
+                    Point left = Point.of(last.getX() - 1, last.getY());
+                    Point right = Point.of(last.getX() + 1, last.getY());
+                    Point up = Point.of(last.getX(), last.getY() - 1);
+                    Point down = Point.of(last.getX(), last.getY() + 1);
+                    if (covered.stream().noneMatch(left::hasSameCoordinates) && isEmpty(left)) {
+                        newPoints.add(left);
+                    }
+                    if (covered.stream().noneMatch(right::hasSameCoordinates) && isEmpty(right)) {
+                        newPoints.add(right);
+                    }
+                    if (covered.stream().noneMatch(up::hasSameCoordinates) && isEmpty(up)) {
+                        newPoints.add(up);
+                    }
+                    if (covered.stream().noneMatch(down::hasSameCoordinates) && isEmpty(down)) {
+                        newPoints.add(down);
+                    }
+                    covered.addAll(newPoints);
+                    if (newPoints.isEmpty()) {
+                        newPaths.add(path);
+                    } else {
+                        newPoints.stream().map(p -> {
+                                    Stack<Point> stack = new Stack<>();
+                                    stack.addAll(path);
+                                    stack.add(p);
+                                    return stack;
+                                })
+                                .forEach(newPaths::add);
+                    }
+                }
+                paths = newPaths;
+                if (coveredSize == covered.size() || covered.stream().anyMatch(target::hasSameCoordinates)) {
+                    break;
+                }
+            }
+            Optional<Stack<Point>> goodPath = paths.stream()
+                    .filter(p -> p.stream().anyMatch(target::hasSameCoordinates))
+                    .findAny();
+            if (goodPath.isPresent()) {
+                Point next = goodPath.get().get(1);
+                if (next.getX() > robot.getUi().getX()) {
+                    robot.getAction().setDirection(Direction.RIGHT);
+                } else if (next.getX() < robot.getUi().getX()) {
+                    robot.getAction().setDirection(Direction.LEFT);
+                } else if (next.getY() > robot.getUi().getY()) {
+                    robot.getAction().setDirection(Direction.DOWN);
+                } else {
+                    robot.getAction().setDirection(Direction.UP);
+                }
+            } else {
+                return;
+            }
+        }
+        robot.move();
     }
 
     private void resolvePush(Robot robot) {
@@ -345,5 +431,6 @@ public class Viewer {
             robot.move();
         }
     }
+
 }
 

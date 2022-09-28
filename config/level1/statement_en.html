@@ -35,6 +35,9 @@
         If there is no obstacle on your destination your robot will move to it and will
         automatically paint the square on which it arrives.<br>
         If the square was already painted by the other team, your robot will paint over it<br>
+        To simplify the problem you can also type <const>MOVE x y</const>. If the destination is
+        empty and a path to the destination exists then the robot will try to move to the
+        destination using a path as short as possible.<br>
         <br>
         What happen in case of conflict? (2 or more robots that want to take action leading into incompatible position)<br>
         Robots have an initiative attribute that changes each turn<br>
@@ -134,8 +137,9 @@
       <div class="text"><var>robotPerPlayer</var> lines (one line in this level) containing robot
         instruction for each robot: <br>
         <ul>
-          <li>MOVE <var>direction</var></li>
           <li>WAIT</li>
+          <li>MOVE <var>direction</var></li>
+          <li>MOVE <var>x</var> <var>y</var></li>
         </ul>
       </div>
     </div>
