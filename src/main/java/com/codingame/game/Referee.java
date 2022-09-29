@@ -200,12 +200,16 @@ public class Referee extends AbstractReferee {
 
     private void calculateState() {
         robots.stream()
+                .filter(r -> isActivePlayer(r.getPlayerId()))
                 .sorted(Comparator.comparingInt(Robot::getInit))
                 .forEach(viewer::resolveAction);
         robots.forEach(r -> tooltipModule.setTooltipText(r.getUi().getSprite(),
                 "x:" + r.getUi().getX() + " y:" + r.getUi().getY()));
     }
 
+    private boolean isActivePlayer(int playerId) {
+        return gameManager.getActivePlayers().stream().anyMatch(p -> p.getIndex() == playerId);
+    }
 
     private List<Robot> getUnits(int playerIndex) {
         return robots.stream()
