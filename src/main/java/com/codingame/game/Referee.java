@@ -42,7 +42,7 @@ public class Referee extends AbstractReferee {
     private final Random random = new Random();
     private static final int MAX_TURN = 100;
     private static final int FIRST_TURN_MAX_TIME = 1000;
-    private static final int TURN_MAX_TIME = 100;
+    private static final int TURN_MAX_TIME = 70;
 
 
     private int playerCount;
