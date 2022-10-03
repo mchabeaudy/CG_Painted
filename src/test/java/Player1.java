@@ -85,8 +85,8 @@ public class Player1 {
 //                }
                 Square next = toNextEmpty2(robot, teamId,robots.stream().filter(r -> r.getRobotId() != robot.getRobotId())
                                 .collect(Collectors.toList()), new ArrayList<>());
-//                System.out.println("MOVE " + next.x + ' ' + next.y);
-                System.out.println("MOVER");
+                System.out.println("MOVE " + next.x + ' ' + next.y);
+//                System.out.println("MOVER");
 
             }
         }
