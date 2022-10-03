@@ -41,6 +41,8 @@ public class Referee extends AbstractReferee {
 
     private final Random random = new Random();
     private static final int MAX_TURN = 100;
+    private static final int FIRST_TURN_MAX_TIME = 1000;
+    private static final int TURN_MAX_TIME = 100;
 
 
     private int playerCount;
@@ -50,6 +52,8 @@ public class Referee extends AbstractReferee {
     public void init() {
         playerCount = gameManager.getPlayerCount();
         gameManager.setMaxTurns(MAX_TURN * playerCount);
+        gameManager.setTurnMaxTime(TURN_MAX_TIME);
+        gameManager.setFirstTurnMaxTime(FIRST_TURN_MAX_TIME);
         random.setSeed(gameManager.getSeed());
         gameManager.setFrameDuration(400);
         switch (gameManager.getLeagueLevel()) {
