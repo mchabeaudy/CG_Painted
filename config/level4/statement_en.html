@@ -20,31 +20,28 @@
         robot.<br>
         You have 2 robots under your control.<br>
         Boxes and/or teleport portals <strong>may</strong> now be part of map.<br>
-        Teleports allow you to teleport your robot to another teleport portal<br>
+        Teleports allow you to teleport your robot to another teleport portal.<br>
         Robots can be push or pull boxes, blocking access to other robots, and also
-        <strong>blocking teleport portal</strong> when it is placed over it<br>
-        To simplify the problem you can also type <const>MOVE x y</const>. If the destination is
-        empty and a path to the destination exists then the robot will try to move to the
-        destination using a path as short as possible.<br>
+        <strong>blocking teleport portal</strong> when it is placed over it.<br>
         <div class="statement-new-league-rule">
           You play now with a partner, controlling also 2 robots.<br>
         </div>
         <ul>
-          <li>MOVE : Your robot will move</li>
-          <li>WAIT : Your robot will not do anything</li>
-          <li>PUSH : Your robot will push a box</li>
-          <li>PULL : Your robot will pull a box</li>
-          <li>TELEPORT : Your robot will try to use a teleport</li>
+          <li>MOVE : Your robot will move.</li>
+          <li>WAIT : Your robot will not do anything.</li>
+          <li>PUSH : Your robot will push a box.</li>
+          <li>PULL : Your robot will pull a box.</li>
+          <li>TELEPORT : Your robot will try to use a teleport.</li>
         </ul>
         <br>
         The board is made with a square grid where (0,0) coordinate is UPPER LEFT square.<br>
         <const>MOVE</const>, <const>PUSH</const> and <const>PULL</const> instructions must be
         followed by a <const>DIRECTION</const>.
         <ul>
-          <li>RIGHT - increasing x coordinate</li>
-          <li>LEFT - decreasing x coordinate</li>
-          <li>UP - decreasing y coordinate</li>
-          <li>DOWN - increasing y coordinate</li>
+          <li>RIGHT - increasing x coordinate.</li>
+          <li>LEFT - decreasing x coordinate.</li>
+          <li>UP - decreasing y coordinate.</li>
+          <li>DOWN - increasing y coordinate.</li>
         </ul>
         Be careful you cannot PUSH or PULL boxes if you don't have enough space to do it<br>
         <br>
@@ -53,15 +50,18 @@
         <br>
         If there is no obstacle on your destination your robot will move to it and will
         automatically paint the square on which it arrives.<br>
-        If the square was already painted by the other team, your robot will paint over it<br>
+        If the square was already painted by the other team, your robot will paint over it.<br>
+        To simplify the problem you can also type <const>MOVE x y</const>. If the destination is
+        empty and a path to the destination exists then the robot will try to move to the
+        destination using a path as short as possible.<br>
         <br>
         Now there are walls on the map. Robots cannot paint or walk on walls.<br>
         At the beginning of each round a new random map is generated so walls are not in the same
         position.<br>
         <br>
         What happen in case of conflict? (2 or more robots that want to take action leading into incompatible position)<br>
-        Robots have an initiative attribute that changes each turn<br>
-        Robots perform their action sequentially starting with the robot with the lowest initiative<br>
+        Robots have an initiative attribute that changes each turn.<br>
+        Robots perform their action sequentially starting with the robot with the lowest initiative.<br>
         Exemple: <br>
         <ul>
           <li>Robot 1 : x=5, y=5, init=1, action=MOVE RIGHT</li>
@@ -82,7 +82,7 @@
             <div class="title">Victory conditions</div>
             <div class="text">
               <ul style="padding-bottom: 0; margin-bottom: 0;">
-                <li>Your team painted the most square after 100 turns.</li>
+                <li>Your team has painted the most squares after 100 turns.</li>
               </ul>
             </div>
           </div>
